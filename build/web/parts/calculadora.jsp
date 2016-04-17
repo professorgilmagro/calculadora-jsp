@@ -62,7 +62,8 @@
              <tr>
                  <td><button type="button">0</button></td>
                 <td><button type="button" id="btn-decimal" >,</button></td>
-                <td colspan="2"><button type="submit" id="btn-calculate" >=</button></td>
+                <td><button type="button" id="btn-percent" >%</button></td>
+                <td><button type="submit" id="btn-calculate" >=</button></td>
             </tr>
         </tbody>
     </table>

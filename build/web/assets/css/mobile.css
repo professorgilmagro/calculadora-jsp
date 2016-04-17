@@ -142,3 +142,11 @@ table.teclado td button {height: inherit;}
 .dataTables_wrapper .dataTables_length {display: table;}
 article.historic table td{padding: 2px;}
 article.historic table caption{margin-top:2em;}
+
+form.calculator table.calc-board tr.visor #calc-screen{
+    font-size: 1.2em;
+}
+
+form.calculator table.calc-board tr.visor td.content{
+    height: 1.8em;
+}
