@@ -188,9 +188,42 @@ table.calc-board tr.visor ul.warnings li{
 }
 
 form.calculator table.calc-board tr.visor #calc-screen{
-    font-size: 2em;
+    font-size: 0.8em;
     text-align: right;
     width: 98%;
     overflow: hidden;
     display: block;
+}
+
+
+tr.visor div.fracao{
+    display: table;
+    float: right;
+}
+
+tr.visor div.fracao span.numerador {
+    display: table;
+    border-bottom: 1px solid #FFF;
+    clear: both;
+    margin: auto;
+    padding: 0;
+}
+tr.visor div.fracao span.denominador {
+    display: table;
+    clear: both;
+    margin: auto;
+     padding: 0;
+}
+
+button#btn-toogle-cursor mfrac{
+    font-size: 0.7em;
+    font-family: 'Open Sans Condensed',Arial,sans-serif;
+}
+
+button#btn-toogle-cursor mfrac .active{
+    color: #00A4A4 !important;
+}
+
+button#btn-toogle-cursor mfrac .active:before{
+    content: "|"
 }
