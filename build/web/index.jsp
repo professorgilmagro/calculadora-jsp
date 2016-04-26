@@ -10,12 +10,10 @@
             <link rel="stylesheet" type="text/css" href="assets/css/base.css">
             <link rel="stylesheet" type="text/css" href="assets/css/home.css">
             <link rel="stylesheet" type="text/css" href="assets/css/calculadora.css">
-            <link rel="stylesheet" type="text/css" href="assets/css/mathml.css">
             <link rel="stylesheet" type="text/css" href="assets/css/mobile.css" media="screen and (max-width: 768px)">
             <script type="text/javascript" src="assets/js/jquery-1.9.0.js" ></script>
-		<script type="text/javascript" src="assets/js/ASCIIMathML.js"></script>
-                <script async src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML-full"> </script>
-                <script type="text/javascript" src="assets/js/calculator.js" ></script>
+            <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=AM_HTMLorMML-full.js"></script>
+            <script type="text/javascript" src="assets/js/calculator.js" ></script>
             <title>Calculadora de frações - Home</title>
 	</head>
 	<body class="home">

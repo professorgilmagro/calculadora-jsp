@@ -188,32 +188,13 @@ table.calc-board tr.visor ul.warnings li{
 }
 
 form.calculator table.calc-board tr.visor #calc-screen{
-    font-size: 0.8em;
+    font-size: 0.6em;
     text-align: right;
     width: 98%;
     overflow: hidden;
     display: block;
 }
 
-
-tr.visor div.fracao{
-    display: table;
-    float: right;
-}
-
-tr.visor div.fracao span.numerador {
-    display: table;
-    border-bottom: 1px solid #FFF;
-    clear: both;
-    margin: auto;
-    padding: 0;
-}
-tr.visor div.fracao span.denominador {
-    display: table;
-    clear: both;
-    margin: auto;
-     padding: 0;
-}
 
 button#btn-toogle-cursor mfrac{
     font-size: 0.7em;

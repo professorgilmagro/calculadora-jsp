@@ -20,6 +20,7 @@ $(function(){
                         cursor_toggle: "#btn-toogle-cursor"
                     },
                     screen: "#calc-screen",
+                    mathText: "#mathText" ,
                     warnings: "tr.visor td.content ul.warnings",
                     category_info: "tr.visor td.content div.tipo-fracao",
                     mathML: {
@@ -39,14 +40,12 @@ $(function(){
                 _initialize: function( options ) {
                     this.settings = $.extend( {}, this.defaults, options ) ;
                     this.$screen = $(this.settings.screen);
-                    this.$entered1 = $(this.settings.entered1);
-                    this.$entered2 = $(this.settings.entered2);
+                    this.$mathText = $(this.settings.mathText);
                     this.$warnings = $(this.settings.warnings);
                     this.$category_info = $(this.settings.category_info);
                 } ,
-                _updateMathContent: function(TeX) {
-                    console.log(TeX);
-                    
+                _updateMathContent: function() {
+                    var TeX = this.$mathText.val();
                     var display = null;
                     MathJax.Hub.Queue(function () {
                       display = MathJax.Hub.getAllJax("calc-screen")[0];
@@ -66,44 +65,10 @@ $(function(){
                             return ;
                         }
                         
-                        var TeX = $("#mathText").val() + typed_value.toString();
-                        $("#mathText").val(TeX);
-                        calc._updateMathContent(TeX);
-                        
-//                        if ( calc.new_frac ) {
-//                            $mrow.append(settings.mathML.mfrac);
-//                            calc.new_frac = false;
-//                            calc.cursor = calc.CURSOR_NUMERADOR;
-//                        }
-//                        
-//                        var $mfrac = $mrow.find("mfrac").last();
-//                        if( calc.cursor === calc.CURSOR_NUMERADOR ) {
-//                            $mfrac.find("mn").first().append(typed_value);
-//                            return ;
-//                        }
-//                         
-//                        $mfrac.find("mn").last().append(typed_value);  
+                        var TeX = calc.$mathText.val() + typed_value.toString();
+                        calc.$mathText.val(TeX);
+                        calc._updateMathContent();
                     });
-                } ,
-                _fillField_value:function(typed_value){
-                    if ( ! $.isNumeric(typed_value) && typed_value !== "," ) {
-                        return ;
-                    }
-                    
-                    if ( $.isNumeric( this.$entered2.val() ) || this.$screen.find(this.settings.divisor_symbol).length > 0 ){
-                        if ( typed_value === "," && this.$entered2.val().indexOf( "," ) !== -1 ){
-                            typed_value = '';
-                        }
-                        
-                        this.$entered2.val(this.$entered2.val() + '' + typed_value);
-                        return ;
-                    }
-                    
-                    if ( typed_value === "," && this.$entered1.val().indexOf( "," ) !== -1 ){
-                        typed_value = '';
-                    }
-                    
-                    this.$entered1.val(this.$entered1.val() + '' + typed_value);
                 } ,
                 backspace: function() {
                    var settings = this.settings ;
@@ -113,30 +78,17 @@ $(function(){
                        calc._clean_info();
                        var has_divisor_symbol = calc.$screen.find(calc.settings.divisor_symbol).length > 0 ;
                                                                      
-                       if ( has_divisor_symbol && calc.$entered2.val().length === 0 ) {
-                           calc.$screen.find(calc.settings.divisor_symbol).remove();
-                           return ;
-                       }
-                       
-//                       var $entered = calc.$entered2.val().length > 0 ? calc.$entered2 : calc.$entered1; 
-//                       var new_entered_value = $entered.val().substr(0,($entered.val().length - 1));
-//                       $entered.val(new_entered_value);
-//                       
-//                       var screen_content = calc.$screen.html(); 
-//                       var new_content = screen_content.substr(0,(screen_content.length - 1));
-//                       calc.$screen.html(new_content);
+                        if ( has_divisor_symbol && calc.$entered2.val().length === 0 ) {
+                            calc.$screen.find(calc.settings.divisor_symbol).remove();
+                            return ;
+                        }
                    });
                 } ,
                 divisor: function() {
                    var settings = this.settings ;
                    var calc = this ;
                    $(settings.buttons.divisor).click(function(){
-                       if ( calc.$screen.text().length === 0 || calc.$screen.find(settings.divisor_symbol).length > 0 ) {
-                           return ;
-                       }
-                       
-                       calc._clean_info();
-                       calc.$screen.append('<span class="'+settings.divisor_symbol.replace(".","")+'"></span>');
+                       calc.$mathText.val(calc.$mathText.val() + $(this).text());
                    } ) ;
                 } ,
                 toggleCursor: function(){
@@ -159,12 +111,12 @@ $(function(){
                         var calc = this ;
 			$(calc.settings.buttons.clean).on( "click" , function (e) {
                             e.preventDefault() ;
-                            $( calc.settings.mathML.mrow ).empty();
-                            calc.$entered1.val("");
-                            calc.$entered2.val("");
+                            calc.$mathText.val("");
+                            calc._updateMathContent();
                             calc._clean_info();
                             calc.cursor = calc.CURSOR_NUMERADOR;
-                            $(calc.settings.buttons.cursor_toggle).find("span").removeClass("active").find("span").first("active");
+                            $(calc.settings.buttons.cursor_toggle).find("span").removeClass("active");
+                            $(calc.settings.buttons.cursor_toggle).find("span").first().addClass("active");
 			}) ;
 		} ,
                 _clean_info: function(){
