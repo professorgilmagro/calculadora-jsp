@@ -17,7 +17,7 @@
 
             <tr>
                 <td colspan="5">
-                    <input name="mathText" id="mathText" type="hidden" value="1/9+2/3">
+                    <input name="mathText" id="mathText" type="hidden" value="1/9+2/3*1/2">
                     <input name="numerador[]" id="calc-value1" type="hidden" value="<%= result == null ? "" : result %>">
                     <input name="divisor[]" id="calc-value2" type="hidden">
                 </td>
@@ -26,7 +26,7 @@
                 <td colspan="4" class="content" >
                     <div class="tipo-fracao"><%= categoria == null ? "" : categoria %></div>
                     <div id="calc-screen">
-                        `1/7+1/9`
+                        `1/7+1/9-1/7*4/4÷8/2`
                     </div>
                     <ul class="warnings">
                     <%

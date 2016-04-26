@@ -22,11 +22,7 @@ $(function(){
                     screen: "#calc-screen",
                     mathText: "#mathText" ,
                     warnings: "tr.visor td.content ul.warnings",
-                    category_info: "tr.visor td.content div.tipo-fracao",
-                    mathML: {
-                        mrow : "#calc-screen math mrow",
-                        mfrac:"<mfrac><mn></mn><mn></mn></mfrac>"
-                    }
+                    category_info: "tr.visor td.content div.tipo-fracao"
 		} ,
 		init : function( options ) {
                         this._initialize( options ) ;
@@ -65,8 +61,23 @@ $(function(){
                             return ;
                         }
                         
-                        var TeX = calc.$mathText.val() + typed_value.toString();
-                        calc.$mathText.val(TeX);
+                        console.log(calc.$mathText.val());
+                        
+                        var TeX = calc.$mathText.val().toString() ;
+                        var fract = TeX.split('/');
+                        var item = fract.length-1;
+                        if ( calc.cursor === calc.CURSOR_NUMERADOR && item > 0 ) {
+                            item --;
+                        }
+                        
+                        var fracs = TeX.split(/\+|-|\*|÷/);
+                        console.log(fracs);
+                        if ( TeX.indexOf('/') === -1 && calc.cursor === calc.CURSOR_DENOMINADOR ) {
+                            typed_value = '/' + typed_value;
+                        }
+                        
+                        fract[item] += typed_value.toString() ;
+                        calc.$mathText.val(fract.join('/'));
                         calc._updateMathContent();
                     });
                 } ,
