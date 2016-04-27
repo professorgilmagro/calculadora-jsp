@@ -17,7 +17,7 @@
 
             <tr>
                 <td colspan="5">
-                    <input name="mathText" id="mathText" type="hidden" value="1/9+2/3*1/2">
+                    <input name="mathText" id="mathText" type="hidden" value="">
                     <input name="numerador[]" id="calc-value1" type="hidden" value="<%= result == null ? "" : result %>">
                     <input name="divisor[]" id="calc-value2" type="hidden">
                 </td>
@@ -25,8 +25,9 @@
             <tr class="visor">
                 <td colspan="4" class="content" >
                     <div class="tipo-fracao"><%= categoria == null ? "" : categoria %></div>
+                    <img src="assets/images/xy.png">
                     <div id="calc-screen">
-                        `1/7+1/9-1/7*4/4÷8/2`
+                        `0`
                     </div>
                     <ul class="warnings">
                     <%
@@ -43,26 +44,25 @@
                 <td><button id="btn-clean" type="button">C</button></td>
                 <td><button type="button" id="btn-backspace" ><img src="assets/images/back-backspace.png"></button></td>
                 <td><button id="btn-toogle-cursor" type="button"><math><mrow><mfrac><mn><span class="active">a</span></mn><mn><span>b</span></mn></mfrac></mrow></math></button></td>
-                <td><button type="button" id="btn-divisor" >&divide;</button></td>
+                <td><button type="button" class="btn-operator" >÷</button></td>
             </tr>
-
             <tr>
                 <td><button type="button" >7</button></td>
                 <td><button type="button" >8</button></td>
                 <td><button type="button" >9</button></td>
-                <td><button type="button" disabled="disabled" >&times;</button></td>
+                <td><button type="button" class="btn-operator">×</button></td>
             </tr>
              <tr>
                 <td><button type="button" >4</button></td>
                 <td><button type="button" >5</button></td>
                 <td><button type="button" >6</button></td>
-                <td><button type="button" disabled="disabled">&minus;</button></td>
+                <td><button type="button" class="btn-operator">-</button></td>
             </tr>
             <tr>
                 <td><button type="button" >1</button></td>
                 <td><button type="button" >2</button></td>
                 <td><button type="button" >3</button></td>
-                <td><button type="button" disabled="disabled">&#43;</button></td>
+                <td><button type="button" class="btn-operator">+</button></td>
             </tr>
              <tr>
                  <td><button type="button">0</button></td>
