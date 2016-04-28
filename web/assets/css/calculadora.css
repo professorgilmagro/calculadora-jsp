@@ -195,6 +195,10 @@ form.calculator table.calc-board tr.visor #calc-screen{
     display: block;
 }
 
+form.calculator table.calc-board tr.visor #calc-screen span.mrow span.mn,
+form.calculator table.calc-board tr.visor #calc-screen span.mrow span.mo {
+    font-family: 'Open Sans Condensed',Arial,sans-serif !important;
+}
 
 button#btn-toogle-cursor mfrac{
     font-size: 0.7em;
@@ -207,4 +211,33 @@ button#btn-toogle-cursor mfrac .active{
 
 button#btn-toogle-cursor mfrac .active:before{
     content: "|"
+}
+
+form.calculator table.calc-board tr.visor td.content div.cursor-frac{
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    font-size: 18px;
+    width: 75px;
+    display: table;
+    cursor: pointer;
+}
+
+form.calculator table.calc-board tr.visor td.content div.cursor-frac span{
+    display: block;
+    clear: both;
+    width: 100%;
+    text-align: center;
+}
+
+form.calculator table.calc-board tr.visor td.content div.cursor-frac span.line{
+    border-bottom: 1px solid #FFF;
+    width: 45%;
+    margin: auto;
+    height: 2px;
+}
+
+form.calculator table.calc-board tr.visor td.content div.cursor-frac span.active{
+    color: #F7F300;
+    background: url("../images/editv2.png") no-repeat 40px 5px;
 }

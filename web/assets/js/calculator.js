@@ -33,6 +33,8 @@ $(function(){
                 this.operators();
                 this.key_events();
                 this.toggleCursor();
+                
+                
             } ,
             _initialize: function( options ) {
                 this.settings = $.extend( {}, this.defaults, options ) ;
@@ -44,6 +46,7 @@ $(function(){
             _updateMathContent: function() {
                 var TeX = this.$mathText.val();
                 var display = null;
+                
                 MathJax.Hub.Queue(function () {
                   display = MathJax.Hub.getAllJax("calc-screen")[0];
                 });
@@ -134,18 +137,27 @@ $(function(){
             } ,
             toggleCursor: function(){
                var calc = this;
-               $(calc.settings.buttons.cursor_toggle).on( "click" , function (e) {
+               $cursor_frac = this.$screen.parents(".content").find(".cursor-frac");
+               
+                $(calc.settings.buttons.cursor_toggle).on( "click" , function (e) {
                     e.preventDefault() ;
                     $(this).find("span").removeClass("active");
+                    $cursor_frac.find("span").removeClass("active");
 
                     if( calc.cursor === calc.CURSOR_NUMERATOR ) {
                         $(this).find("span").last().addClass("active");
+                        $cursor_frac.find("span").last().addClass("active");
                         calc.cursor = calc.CURSOR_DENOMINATOR ;
                     }
                     else if( calc.cursor === calc.CURSOR_DENOMINATOR) {
                         calc.cursor = calc.CURSOR_NUMERATOR ;
                         $(this).find("span").first().addClass("active");
+                        $cursor_frac.find("span").first().addClass("active");
                     }
+                });
+                
+                $cursor_frac.on( "click" , function(){
+                    $(calc.settings.buttons.cursor_toggle).trigger("click");
                 });
             } ,
             clean: function() {

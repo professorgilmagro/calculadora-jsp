@@ -25,7 +25,7 @@
             <tr class="visor">
                 <td colspan="4" class="content" >
                     <div class="tipo-fracao"><%= categoria == null ? "" : categoria %></div>
-                    <img src="assets/images/xy.png">
+                    <div class="cursor-frac"><span class="active" >x</span><span class="line" >&nbsp;</span><span>y</span></div>
                     <div id="calc-screen">
                         `0`
                     </div>
