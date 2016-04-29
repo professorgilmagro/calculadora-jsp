@@ -9,6 +9,8 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -77,14 +79,30 @@ public class Calculadora extends HttpServlet {
      * @return Fracao
      */
     private Fracao _getResult( String mathText ){
-        Fracao mainFrac = new Fracao();
         String[] fracs = mathText.split("\\+|-|×|÷");
-        List list = Arrays.asList(fracs);
+        List<String> ops = new ArrayList<String>();
         
-        for (String frac : fracs) {
-            String[] numbers = frac.split("/");
+        Matcher m = Pattern.compile("\\+|-|×|÷").matcher(mathText);
+        while (m.find()) {
+            ops.add(m.group(0).toString());
+        }
+        
+        if(ops.isEmpty()){
+            
+        }
+        
+        Fracao mainFrac = null ;
+        for (int i = 0; i < fracs.length; i++) {
+            String[] numbers = fracs[i].split("/");
             int numerador = Integer.parseInt(numbers[0]);
-            int denominador = Integer.parseInt(numbers[1]);
+            int denominador = numbers.length == 2 ? Integer.parseInt(numbers[1]) : 1;
+            
+            // cria a fracao que vai gerir o cálculo com a primeira parte da equação
+            if ( i == 0 ) {
+                mainFrac = new Fracao(numerador, denominador);
+                continue;
+            }
+            
             mainFrac.add( new Fracao(numerador, denominador) );
         }
         
