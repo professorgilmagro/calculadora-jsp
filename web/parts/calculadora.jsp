@@ -1,33 +1,40 @@
 <%@page import="java.util.ArrayList"%>
 <form id="fraction_calculator" method="post" class="calculator" action="<%= request.getContextPath() %>/calculadora">
     <%
-        String categoria = (String) request.getAttribute("categoria");
         String result = (String) request.getAttribute("resultado");
+        ArrayList<String> tipos = (ArrayList<String>) request.getAttribute("tipos");
         ArrayList<String> avisos = (ArrayList<String>) request.getAttribute("avisos");
     %>
    <div class="bg-calc">
     <table class="calc-board">
         <caption>
             <a class="active" href="#" >Resultado</a>
-            <a class="inative" href="#" >Tipo</a>
         </caption>
         <tbody>
-            
-           <?xml version="1.0" encoding="UTF-8"?>
-
             <tr>
                 <td colspan="5">
                     <input name="mathText" id="mathText" type="hidden" value="">
-                    <input name="numerador[]" id="calc-value1" type="hidden" value="<%= result == null ? "" : result %>">
-                    <input name="divisor[]" id="calc-value2" type="hidden">
                 </td>
             </tr>
-            <tr class="visor">
+            <tr class="visor classification">
+                <td colspan="4" class="content <%= tipos == null || tipos.isEmpty() ? "hide" : "" %>">
+                    <legend>Classificação da fração:</legend>
+                    <ul>
+                        <%
+                        if( tipos != null ) {
+                            for (String tipo : tipos) {
+                               out.print( "<li>" + tipo + "</li>" );
+                            }
+                        }
+                        %>
+                    </ul>
+                </td>
+            </tr>
+            <tr class="visor calc">
                 <td colspan="4" class="content" >
-                    <div class="tipo-fracao"><%= categoria == null ? "" : categoria %></div>
                     <div class="cursor-frac"><span class="active" >x</span><span class="line" >&nbsp;</span><span>y</span></div>
                     <div id="calc-screen">
-                        `0`
+                        `<%= result == null ? "0" : result %>`
                     </div>
                     <ul class="warnings">
                     <%
@@ -65,10 +72,8 @@
                 <td><button type="button" class="btn-operator">+</button></td>
             </tr>
              <tr>
-                 <td><button type="button">0</button></td>
-                <td><button type="button" id="btn-decimal" >,</button></td>
-                <td><button type="button" id="btn-percent" >%</button></td>
-                <td><button type="submit" id="btn-calculate">=</button></td>
+                <td colspan="2"><button type="button">0</button></td>
+                <td colspan="2" ><button type="submit" id="btn-calculate">=</button></td>
             </tr>
         </tbody>
     </table>

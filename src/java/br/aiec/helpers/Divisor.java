@@ -17,6 +17,7 @@ public final class Divisor {
     private Double divisor;
     private Double result;
     private ArrayList<String> warnings = new ArrayList<String>();
+    private ArrayList<String> types = new ArrayList<String>();
     
     /**
      * Construtor da classe. 
@@ -161,42 +162,49 @@ public final class Divisor {
     }
     
     /**
-     * Retorna a categoria da operação com base nos valores de numerador e divisor
+     * Retorna os Tipos de Frações
      * 
-     * @return double
+     * @return ArrayList
      */
-    public String getCategory(){
+    public ArrayList<String> getTypes(){
         if ( ! this.getWarnings().isEmpty() ) {
-            return "" ;
+            return this.types ;
         }
         
         //Unitária: o numerador é igual a 1 e o denominador é um inteiro positivo.
         if ( this.getNumerador() == 1 && this.getDivisor() > 0 && this.getDivisor() % 1 == 0 ) {
-            return "Unitária";
+            this.types.add("Unitária");
         }
         
         //Aparente: O numerador é múltiplo ao denominador
         if ( this.getNumerador() % this.getDivisor() == 0 ) {
-            return "Aparente" ;
+            this.types.add("Aparente") ;
         }
         
         //Equivalente: Mantêm a mesma proporção de outra fração
          if ( this.isEquivalentType() ) {
-            return "Equivalente";
+            this.types.add("Equivalente");
         }
         
         //Própria: O numerador é menor que o denominador
         if ( this.getNumerador() < this.getDivisor() ) {
-            return "Própria" ;
+            this.types.add("Própria") ;
+        }
+        else {
+            this.types.add("Imprópria") ;
+        }
+        
+        // Imprópria: O numerador é maior ou igual ao denominador
+        if ( this.getNumerador() < this.getDivisor() ) {
+            this.types.add("Própria") ;
         }
         
         //Irredutível: o numerador e o denominador são primos entre si, não permitindo simplificação
         if ( this.isPrimeNumbers() ) {
-            return "Irredutível";
+            this.types.add("Irredutível");
         }
         
-        // Imprópria: O numerador é maior ou igual ao denominador
-        return "Imprópria" ;
+        return this.types;
     }
     
     /**

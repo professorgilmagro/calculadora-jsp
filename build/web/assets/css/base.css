@@ -150,3 +150,7 @@ table.teclado td{
 table.teclado td button {
     padding: 0.5em 1em;
 }
+
+.hide{
+    display: none;
+}

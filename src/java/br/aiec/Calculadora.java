@@ -4,9 +4,11 @@ package br.aiec;
  * Página de controle da página de Calculadora
  */
 
-import br.aiec.helpers.Divisor;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -38,7 +40,7 @@ public class Calculadora extends HttpServlet {
         
         try {
            request.setAttribute("resultado", "");
-           request.setAttribute("categoria", "");
+           request.setAttribute("tipos", new ArrayList<String>());
            request.getRequestDispatcher("calculadora.jsp").forward(request, response);
         } finally {
             out.close();
@@ -57,14 +59,37 @@ public class Calculadora extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String numerador = request.getParameter("num1").replace(",", ".");
-        String denominador = request.getParameter("num2").replace(",", ".");
+        String mathText = request.getParameter("mathText");
         
-        Divisor divisor = new Divisor(numerador, denominador);
-        request.setAttribute("categoria", divisor.getCategory());
-        request.setAttribute("resultado", divisor.getFormatResult());
-        request.setAttribute("avisos", divisor.getWarnings());
+        Fracao result = this._getResult(mathText);
+        request.setAttribute("tipos", result.getTypes());
+        
+        request.setAttribute("resultado", result.getPrettyMathResult());
+        request.setAttribute("avisos", result.getWarnings());
         
        request.getRequestDispatcher("calculadora.jsp").forward(request, response);
+    }
+    
+    /**
+     * Prepara o objeto fracao para os calculos e retorna uma fracao de resultado
+     * 
+     * @param mathText  Composição textual do cálculo (fórmula)
+     * @return Fracao
+     */
+    private Fracao _getResult( String mathText ){
+        Fracao mainFrac = new Fracao();
+        String[] fracs = mathText.split("\\+|-|×|÷");
+        List list = Arrays.asList(fracs);
+        
+        for (String frac : fracs) {
+            String[] numbers = frac.split("/");
+            int numerador = Integer.parseInt(numbers[0]);
+            int denominador = Integer.parseInt(numbers[1]);
+            mainFrac.add( new Fracao(numerador, denominador) );
+        }
+        
+        String result = mainFrac.getPrettyMathResult();
+        
+        return mainFrac;
     }
 }

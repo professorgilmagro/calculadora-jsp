@@ -209,7 +209,7 @@ button#btn-toogle-cursor mfrac .active{
     color: #00A4A4 !important;
 }
 
-button#btn-toogle-cursor mfrac .active:before{
+button#btn-toogle-cursor mfrac .active:after{
     content: "|"
 }
 
@@ -240,4 +240,36 @@ form.calculator table.calc-board tr.visor td.content div.cursor-frac span.line{
 form.calculator table.calc-board tr.visor td.content div.cursor-frac span.active{
     color: #F7F300;
     background: url("../images/editv2.png") no-repeat 40px 5px;
+}
+
+form.calculator table.calc-board tr.visor.classification{
+    text-align: left;
+    font-size: 0.4em;
+    margin-left: 0;
+}
+
+form.calculator table.calc-board tr.visor.classification legend{
+    font-weight: bold;
+    font-size: 1em;
+    border-bottom: 1px dotted lightsteelblue;
+    margin-bottom: 10px;
+    color: yellow;
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding-bottom: 10px;
+    clear: both;
+}
+
+form.calculator table.calc-board tr.visor.classification ul{
+    margin-left: -2.5em;
+}
+
+form.calculator table.calc-board tr.visor.classification ul li{
+    text-align: left;
+    float: left;
+    margin-right: 10px;
+    display: table;
+    width: auto;
+    padding-bottom: 10px;
 }
