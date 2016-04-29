@@ -32,7 +32,7 @@ $(function(){
                 this.backspace();
                 this.operators();
                 this.key_events();
-                this.toggleCursor();
+                this.toggleCursor.init( this );
                 
                 
             } ,
@@ -42,9 +42,10 @@ $(function(){
                 this.$mathText = $(this.settings.mathText);
                 this.$warnings = $(this.settings.warnings);
                 this.$category_info = $(this.settings.category_info);
+                this.$btnCursor = $(this.settings.buttons.cursor_toggle);
+                this.$cursorView = this.$screen.parents(".content").find(".cursor-frac");
             } ,
             _updateMathContent: function() {
-                var TeX = this.$mathText.val();
                 var display = null;
                 
                 MathJax.Hub.Queue(function () {
@@ -52,9 +53,12 @@ $(function(){
                 });
 
                 if ( display !== null ) {
-                    MathJax.Hub.Queue(["Text", display, TeX]);
+                    MathJax.Hub.Queue(["Text", display, this.getTeX()]);
                 }
             },
+            getTeX: function() {
+                return this.$mathText.val().toString() ;
+            } ,
             numbers: function() {
                 var settings = this.settings ;
                 var calc = this ;
@@ -72,17 +76,25 @@ $(function(){
                 });
             } ,
             _reassembleTeX: function(typed_value){
-                var TeX = this.$mathText.val().toString() ;
-                var fracs = TeX.split(/\+|-|×|÷/);
+                var fracs = this.getTeX().split(/\+|-|×|÷/);
                 var fracEdit = fracs.pop().split(this.FRAC_SEPARATOR);
+                
+                if ( fracEdit.length === 1 
+                        && $.isNumeric(fracEdit[0]) 
+                        && parseInt(fracEdit[0]) > 0 
+                        && this.cursor === this.CURSOR_DENOMINATOR 
+                    ) {
+                    
+                    fracEdit[1] = "";
+                }
 
                 // seleciona a parte a ser editada (numerador ou denominador)
                 var elect = ( fracEdit.length === 2 && this.cursor === this.CURSOR_DENOMINATOR ) ? 1 : 0;
                 fracEdit[elect] += typed_value.toString();
 
                 var used = [];
-                for( var i = 0; i < TeX.length; i++ ) {
-                    var s = TeX.substr(i, 1) ;
+                for( var i = 0; i < this.getTeX().length; i++ ) {
+                    var s = this.getTeX().substr(i, 1) ;
                     if ( $.inArray(s, this.OPERATORS) !== -1 ){
                         used.push(s);
                     }
@@ -104,18 +116,32 @@ $(function(){
 
                $(settings.buttons.backspace).click(function(){
                    calc._clean_info();
-                   var TeX = calc.$mathText.val();
-                   if ( TeX.length === 0 ) {
+                   if ( calc.getTeX().length === 0 ) {
                        return ;
                    }
                    
                    // remove o último dígito
-                   var newTeX = TeX.substring(0, TeX.length - 1);
+                   var newTeX = calc.getTeX().substring(0, calc.getTeX().length - 1);
                    
                    // verifica se o próximo dígito é o separador, caso afirmativo, removê-lo-á 
                    if( newTeX.substr(-1,1) === calc.FRAC_SEPARATOR ){
                        newTeX = newTeX.substring(0, newTeX.length - 1);
+                       calc.$btnCursor.trigger("click");
                    }
+                   
+                   // se o dígito que está sendo apagado for um operador e
+                   // houver um denominador da fracao que está sendo apagada,
+                   // o cursor deve ser movido do numerador para o denominador
+                   if ( $.inArray(calc.getTeX().substr(-1,1), calc.OPERATORS) !== -1 ){
+                       var fracs = newTeX.split(/\+|-|×|÷/);
+                       calc.cursor = fracs.pop().split(calc.FRAC_SEPARATOR).length === 2 ? calc.CURSOR_NUMERATOR : calc.CURSOR_DENOMINATOR;
+                       calc.$btnCursor.trigger("click");
+                   }
+                   
+                   // se tudo foi removido, move o cursor para numerador
+                    if($.isEmptyObject(newTeX) && calc.cursor === calc.CURSOR_DENOMINATOR){
+                        calc.$btnCursor.trigger("click");
+                    }
                    
                    calc.$mathText.val(newTeX);
                    calc._updateMathContent();
@@ -125,52 +151,71 @@ $(function(){
                var settings = this.settings ;
                var calc = this ;
                $(settings.buttons.operator).on( "click" , function(){
-                    var TeX = calc.$mathText.val().toString();
-                    var s = TeX.substr(-1,1);
+                    var s = calc.getTeX().substr(-1,1);
                     if ( s === calc.FRAC_SEPARATOR || $.inArray(s, calc.OPERATORS) !== -1 ){
                         return ;
                     }
                    
-                    calc.$mathText.val(TeX + $(this).text());
+                   // se o cursor estiver no denominador da fracao, retorna para o numerador
+                    if(calc.cursor === calc.CURSOR_DENOMINATOR){
+                        $(calc.settings.buttons.cursor_toggle).trigger("click");
+                    }
+                    
+                    calc.$mathText.val(calc.getTeX() + $(this).text());
                     calc._updateMathContent();
                 } ) ;
             } ,
-            toggleCursor: function(){
-               var calc = this;
-               $cursor_frac = this.$screen.parents(".content").find(".cursor-frac");
-               
-                $(calc.settings.buttons.cursor_toggle).on( "click" , function (e) {
-                    e.preventDefault() ;
-                    $(this).find("span").removeClass("active");
-                    $cursor_frac.find("span").removeClass("active");
+            toggleCursor: {
+                init : function(calc){
+                    this.calc = calc;
+                    var that = this;
+                    
+                    // cria o evento para o toggle de cursor ao clicar no botão 
+                    // de alteração disposto no teclado da calculadora
+                    calc.$btnCursor.on( "click" , function (e) {
+                        e.preventDefault() ;
 
-                    if( calc.cursor === calc.CURSOR_NUMERATOR ) {
-                        $(this).find("span").last().addClass("active");
-                        $cursor_frac.find("span").last().addClass("active");
-                        calc.cursor = calc.CURSOR_DENOMINATOR ;
-                    }
-                    else if( calc.cursor === calc.CURSOR_DENOMINATOR) {
-                        calc.cursor = calc.CURSOR_NUMERATOR ;
-                        $(this).find("span").first().addClass("active");
-                        $cursor_frac.find("span").first().addClass("active");
-                    }
-                });
-                
-                $cursor_frac.on( "click" , function(){
-                    $(calc.settings.buttons.cursor_toggle).trigger("click");
-                });
+                        if ($.isEmptyObject(calc.getTeX())) return ;
+                        if( calc.cursor === calc.CURSOR_NUMERATOR ) {
+                           that.moveToDenominator();
+                        }
+                        else if( calc.cursor === calc.CURSOR_DENOMINATOR) {
+                            that.moveToNumerator();
+                        }
+                    });
+                    
+                    // atribui o mesmo comportamento do botão ao sinalizador de
+                    // cursor que é exibido no visor da calculadora
+                    calc.$cursorView.on( "click" , function(){
+                        $(calc.$btnCursor).trigger("click");
+                    });
+                },
+                moveToNumerator: function(){
+                    this._clean();
+                    this.calc.$cursorView.find("span").first().addClass("active");
+                    this.calc.$btnCursor.find("span").first().addClass("active");
+                    this.calc.cursor = this.calc.CURSOR_NUMERATOR ;
+                } ,
+                moveToDenominator: function(){
+                    this._clean();
+                    this.calc.$cursorView.find("span").last().addClass("active");
+                    this.calc.$btnCursor.find("span").last().addClass("active");
+                    this.calc.cursor = this.calc.CURSOR_DENOMINATOR ;
+                } ,
+                _clean:function(){
+                    this.calc.$cursorView.find("span").removeClass("active");
+                    this.calc.$btnCursor.find("span").removeClass("active");
+                }
             } ,
             clean: function() {
-                    var calc = this ;
-                    $(calc.settings.buttons.clean).on( "click" , function (e) {
-                        e.preventDefault() ;
-                        calc.$mathText.val("");
-                        calc._updateMathContent();
-                        calc._clean_info();
-                        calc.cursor = calc.CURSOR_NUMERATOR;
-                        $(calc.settings.buttons.cursor_toggle).find("span").removeClass("active");
-                        $(calc.settings.buttons.cursor_toggle).find("span").first().addClass("active");
-                    }) ;
+                var calc = this ;
+                $(calc.settings.buttons.clean).on( "click" , function (e) {
+                    e.preventDefault() ;
+                    calc.$mathText.val("");
+                    calc._updateMathContent();
+                    calc._clean_info();
+                    calc.toggleCursor.moveToNumerator();
+                }) ;
             } ,
             _clean_info: function(){
                this.$category_info.text("");
