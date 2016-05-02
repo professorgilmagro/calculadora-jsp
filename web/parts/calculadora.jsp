@@ -1,7 +1,8 @@
 <%@page import="java.util.ArrayList"%>
 <form id="fraction_calculator" method="post" class="calculator" action="<%= request.getContextPath() %>/calculadora">
     <%
-        String result = (String) request.getAttribute("resultado");
+        String resultado = (String) request.getAttribute("resultado");
+        String resultadoSimplificado = (String) request.getAttribute("resultadoSimplificado");
         ArrayList<String> tipos = (ArrayList<String>) request.getAttribute("tipos");
         ArrayList<String> avisos = (ArrayList<String>) request.getAttribute("avisos");
     %>
@@ -16,9 +17,15 @@
                     <input name="mathText" id="mathText" type="hidden" value="">
                 </td>
             </tr>
+            <tr class="visor classification simplificado">
+                <td colspan="4" class="content <%= resultadoSimplificado == null ? "hide" : "" %>">
+                <h4>Simplificação da fração:</h4>
+                `<%= resultadoSimplificado %>`
+                </td>
+            </tr>
             <tr class="visor classification">
                 <td colspan="4" class="content <%= tipos == null || tipos.isEmpty() ? "hide" : "" %>">
-                    <legend>Classificação da fração:</legend>
+                <h4>Classificação da fração:</h4>
                     <ul>
                         <%
                         if( tipos != null ) {
@@ -34,7 +41,7 @@
                 <td colspan="4" class="content" >
                     <div class="cursor-frac"><span class="active" >x</span><span class="line" >&nbsp;</span><span>y</span></div>
                     <div id="calc-screen">
-                        `<%= result == null ? "0" : result %>`
+                        `<%= resultado == null ? "0" : resultado %>`
                     </div>
                     <ul class="warnings">
                     <%

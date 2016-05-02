@@ -215,6 +215,7 @@ $(function(){
                     calc._updateMathContent();
                     calc._clean_info();
                     calc.toggleCursor.moveToNumerator();
+                    $(".visor.classification").hide();
                 }) ;
             } ,
             _clean_info: function(){

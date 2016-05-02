@@ -7,7 +7,6 @@ package br.aiec;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -42,6 +41,7 @@ public class Calculadora extends HttpServlet {
         
         try {
            request.setAttribute("resultado", "");
+           request.setAttribute("resultadoSimplificado", "");
            request.setAttribute("tipos", new ArrayList<String>());
            request.getRequestDispatcher("calculadora.jsp").forward(request, response);
         } finally {
@@ -61,12 +61,14 @@ public class Calculadora extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
         String mathText = request.getParameter("mathText");
         
         Fracao result = this._getResult(mathText);
         request.setAttribute("tipos", result.getTypes());
         
         request.setAttribute("resultado", result.getPrettyMathResult());
+        request.setAttribute("resultadoSimplificado", result.getSimplifiedResult().getPrettyMathResult());
         request.setAttribute("avisos", result.getWarnings());
         
        request.getRequestDispatcher("calculadora.jsp").forward(request, response);
@@ -84,7 +86,7 @@ public class Calculadora extends HttpServlet {
         
         Matcher m = Pattern.compile("\\+|-|×|÷").matcher(mathText);
         while (m.find()) {
-            ops.add(m.group(0).toString());
+            ops.add(m.group(0));
         }
         
         if(ops.isEmpty()){
@@ -103,7 +105,7 @@ public class Calculadora extends HttpServlet {
                 continue;
             }
             
-            mainFrac.add( new Fracao(numerador, denominador) );
+            mainFrac.add( new Fracao(numerador, denominador, ops.get(i-1)) );
         }
         
         String result = mainFrac.getPrettyMathResult();

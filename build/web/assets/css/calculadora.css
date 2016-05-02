@@ -248,7 +248,8 @@ form.calculator table.calc-board tr.visor.classification{
     margin-left: 0;
 }
 
-form.calculator table.calc-board tr.visor.classification legend{
+form.calculator table.calc-board tr.visor.classification h4{
+    margin-top: 10px;
     font-weight: bold;
     font-size: 1em;
     border-bottom: 1px dotted lightsteelblue;
