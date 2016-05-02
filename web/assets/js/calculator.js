@@ -48,6 +48,12 @@ $(function(){
             _updateMathContent: function() {
                 var display = null;
                 
+                if ( this.getTeX().length === 1 ) {
+                    $(".visor.classification").hide();
+                    $(".visor .details").hide();
+                    this._clean_info();
+                }
+                
                 MathJax.Hub.Queue(function () {
                   display = MathJax.Hub.getAllJax("calc-screen")[0];
                 });

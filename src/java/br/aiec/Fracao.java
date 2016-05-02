@@ -395,7 +395,7 @@ public class Fracao {
         }
         
         //Decimal: O denominador é uma potência de 10
-        if ( rst.getDenominador() % 10 == 0 ) {
+        if ( rst.getDenominador().toString().startsWith("1") && rst.getDenominador() % 10 == 0 ) {
             rst.types.add("Decimal") ;
         }
         
