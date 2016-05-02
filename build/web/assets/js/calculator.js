@@ -216,6 +216,7 @@ $(function(){
                     calc._clean_info();
                     calc.toggleCursor.moveToNumerator();
                     $(".visor.classification").hide();
+                    $(".visor .details").hide();
                 }) ;
             } ,
             _clean_info: function(){

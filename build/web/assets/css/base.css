@@ -152,5 +152,5 @@ table.teclado td button {
 }
 
 .hide{
-    display: none;
+    display: none !important;
 }

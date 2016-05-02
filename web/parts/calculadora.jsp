@@ -3,8 +3,11 @@
     <%
         String resultado = (String) request.getAttribute("resultado");
         String resultadoSimplificado = (String) request.getAttribute("resultadoSimplificado");
+        String resultadoDecimal = (String) request.getAttribute("resultadoDecimal");
         ArrayList<String> tipos = (ArrayList<String>) request.getAttribute("tipos");
         ArrayList<String> avisos = (ArrayList<String>) request.getAttribute("avisos");
+        Boolean hasResult = resultado != null && ! resultado.isEmpty() ;
+        Boolean hasWarnings = avisos != null && ! avisos.isEmpty() ;
     %>
    <div class="bg-calc">
     <table class="calc-board">
@@ -15,12 +18,6 @@
             <tr>
                 <td colspan="5">
                     <input name="mathText" id="mathText" type="hidden" value="">
-                </td>
-            </tr>
-            <tr class="visor classification simplificado">
-                <td colspan="4" class="content <%= resultadoSimplificado == null ? "hide" : "" %>">
-                <h4>Simplificação da fração:</h4>
-                `<%= resultadoSimplificado %>`
                 </td>
             </tr>
             <tr class="visor classification">
@@ -40,8 +37,14 @@
             <tr class="visor calc">
                 <td colspan="4" class="content" >
                     <div class="cursor-frac"><span class="active" >x</span><span class="line" >&nbsp;</span><span>y</span></div>
+                    <div class="details <%= hasResult && ! hasWarnings ? "" : "hide" %>">
+                        <ul>
+                            <li>Decimal: <span class="decimal" >`<%= resultadoDecimal %>`</span></li>
+                            <li class="<%= resultadoSimplificado == null || resultadoSimplificado.isEmpty() ? "hide" : "" %>">Simplificação: <span class="math" >`<%= resultadoSimplificado %>`</span></li>
+                        </ul>
+                    </div>
                     <div id="calc-screen">
-                        `<%= resultado == null ? "0" : resultado %>`
+                        `<%= hasResult ? resultado : "0" %>`
                     </div>
                     <ul class="warnings">
                     <%

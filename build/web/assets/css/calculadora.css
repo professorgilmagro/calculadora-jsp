@@ -175,7 +175,7 @@ table.calc-board tr.visor ul.warnings{
     position: absolute;
     top: 10px;
     right: 0.5em;
-    font-size: 0.35em;
+    font-size: 0.3em;
     display: table;
     text-align: right;
     width: 90%;
@@ -273,4 +273,32 @@ form.calculator table.calc-board tr.visor.classification ul li{
     display: table;
     width: auto;
     padding-bottom: 10px;
+}
+
+form.calculator table.calc-board tr.visor .details span.MathJax_Preview{
+     font-family: 'Open Sans Condensed',Arial,sans-serif !important;
+}
+
+form.calculator table.calc-board tr.visor .details span.math{
+    color: #00A4A4;
+    font-size: 0.9em;
+    padding-left: 5px;
+}
+
+form.calculator table.calc-board tr.visor .details{
+    font-size: 0.25em;
+    display: table;
+    position: absolute;
+    right: 0;
+    top:-15px;
+}
+
+form.calculator table.calc-board tr.visor .details ul li{
+    float: right;
+    display: table;
+    margin-left: 10px;
+    width: auto;
+    vertical-align: top;
+    line-height: 2em;
+    font-family: 'Open Sans Condensed',Arial,sans-serif;
 }

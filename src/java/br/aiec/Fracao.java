@@ -61,6 +61,11 @@ public class Fracao {
     private Integer denominador ;
     
     /**
+     * Flag para indicar se a expressão é válida para ser calculada
+     */
+    private Boolean valid ;
+    
+    /**
      * Recebe uma instância da fração como resultado do cálculo
      */
     private Fracao result ;
@@ -164,8 +169,21 @@ public class Fracao {
     
      /**
      * Efetua o cálculo da fração
+     * As frações serão solucionadas em pares, seguindo a prioridade conforme
+     * a sequência: Divisão, multiplicação, soma e subtração.
+     * A medida que as partes que compoẽm o cálculo são solucionadas, a
+     * expressão vai sendo reduzida até a obtenção do resultado final.
      */
     protected void calculate(){
+        if( ! this.isValid() ) {
+            this.result = new Fracao(0, 1) ;
+            return ;
+        }
+        
+        /**
+         * Se não há itens agregrados à esta fração, logo a fração é composta
+         * por um único termo, ou seja, ela mesma
+         */
         if ( this.fracs.isEmpty() ){
             this.result = this;
         }
@@ -173,31 +191,33 @@ public class Fracao {
         /**
          * Nesta primeira iteração, efetuamos os cálculos de divisão e carregamos
          * as frações existentes numa nova lista para não modificar a original.
+         * As partes que compõem o cálculo, são solucionados em pares e vão sendo
+         * diluídos até a obtenção do resultado final
          */
-        ArrayList<Fracao> simpleFracs = new ArrayList<Fracao>();
+        ArrayList<Fracao> fracParts = new ArrayList<Fracao>();
         
-        simpleFracs.add(this);
+        fracParts.add(this);
         for (int i = 0; i < fracs.size() && fracs.size() > 0 ; i++) {
             Fracao curFrac = fracs.get(i);
             if(curFrac.getOperador().equals(operator.DIVISION.getSign())) {
-                Fracao prevFrac = fracs.get(i-1);
-                simpleFracs.add(prevFrac.dividir(curFrac));
+                Fracao prevFrac = i > 0 ? fracs.get(i-1) : this;
+                fracParts.set(i, prevFrac.dividir(curFrac));
+                fracParts.remove(prevFrac);
                 continue;
             }
             
-            simpleFracs.add(curFrac);
+            fracParts.add(curFrac);
         }
         
         /**
          * Nesta segunda iteração, efetuamos os cálculos de multiplicação.
          */
-        for (int i = 0; i < fracs.size() && fracs.size() > 1; i++) {
-            Fracao curFrac = fracs.get(i);
+        for (int i = 0; i < fracParts.size() && fracParts.size() > 1; i++) {
+            Fracao curFrac = fracParts.get(i);
             if( curFrac.getOperador().equals(operator.MULTIPLICATION.getSign())) {
-                Fracao prevFrac = fracs.get(i-1);
-                simpleFracs.add(prevFrac.multiplicar(curFrac));
-                simpleFracs.remove(curFrac);
-                simpleFracs.remove(prevFrac);
+                Fracao prevFrac = fracParts.get(i-1);
+                fracParts.set(i, prevFrac.multiplicar(curFrac));
+                fracParts.remove(prevFrac);
             }
         }
         
@@ -205,13 +225,12 @@ public class Fracao {
          * Nesta terceira iteração, efetuamos os cálculos de soma e a redução
          * dos termos.
          */
-        for (int i = 0; i < simpleFracs.size() && simpleFracs.size() > 1; i++) {
-            Fracao curFrac = simpleFracs.get(i);
+        for (int i = 0; i < fracParts.size() && fracParts.size() > 1; i++) {
+            Fracao curFrac = fracParts.get(i);
             if( curFrac.getOperador().equals(operator.ADDITION.getSign())) {
-                Fracao prevFrac = simpleFracs.get(i-1);
-                simpleFracs.add(prevFrac.somar(curFrac));
-                simpleFracs.remove(curFrac);
-                simpleFracs.remove(prevFrac);
+                Fracao prevFrac = fracParts.get(i-1);
+                fracParts.set(i, prevFrac.somar(curFrac));
+                fracParts.remove(prevFrac);
             }
         }
         
@@ -221,17 +240,16 @@ public class Fracao {
          * Se tiver tudo certo, após a execução desta etapa, deverá restar apenas
          * um item que será o resultado do cálculo.
          */
-        for (int i = 0; i < simpleFracs.size() && simpleFracs.size() > 1; i++) {
-            Fracao curFrac = simpleFracs.get(i);
+        for (int i = 0; i < fracParts.size() && fracParts.size() > 1; i++) {
+            Fracao curFrac = fracParts.get(i);
             if( curFrac.getOperador().equals(operator.SUBTRACTION.getSign())) {
-                Fracao prevFrac = simpleFracs.get(i-1);
-                simpleFracs.add(prevFrac.subtrair(curFrac));
-                simpleFracs.remove(curFrac);
-                simpleFracs.remove(prevFrac);
+                Fracao prevFrac = fracParts.get(i-1);
+                fracParts.set(i, prevFrac.subtrair(curFrac));
+                fracParts.remove(prevFrac);
             }
         }
         
-        this.result = simpleFracs.get(0);
+        this.result = fracParts.get(0);
     }
     
     /**
@@ -247,7 +265,7 @@ public class Fracao {
         int num2 = newDenominador/frac.getDenominador() * frac.getNumerador();
         int newNumerador = num1 + num2;
         
-        return new Fracao(newNumerador, newDenominador);
+        return new Fracao(newNumerador, newDenominador, this.getOperador());
     }
     
     /**
@@ -263,7 +281,7 @@ public class Fracao {
         int num2 = newDenominador/frac.getDenominador() * frac.getNumerador();
         int newNumerador = num1 - num2;
         
-        return new Fracao(newNumerador, newDenominador);
+        return new Fracao(newNumerador, newDenominador, this.getOperador());
     }
     
     /**
@@ -277,7 +295,7 @@ public class Fracao {
     public Fracao multiplicar( Fracao frac ){
         int newNumerador = this.getNumerador() * frac.getNumerador();
         int newDenominador = this.getDenominador() * frac.getDenominador();
-        return new Fracao(newNumerador, newDenominador);
+        return new Fracao(newNumerador, newDenominador, this.getOperador());
     }
     
     /**
@@ -291,7 +309,40 @@ public class Fracao {
     public Fracao dividir( Fracao frac ){
         int newNumerador = this.getNumerador() * frac.getDenominador();
         int newDenominador = this.getDenominador() * frac.getNumerador();
-        return new Fracao(newNumerador, newDenominador);
+        return new Fracao(newNumerador, newDenominador, this.getOperador());
+    }
+    
+    /**
+     * Verifica se a fração, bem como as frações embutidas, são válidas
+     * Por ora, apenas validamos se o denominador é Zero(0)
+     * 
+     * @return Boolean
+     */
+    private Boolean isValid(){
+        if( this.valid != null ){
+            return this.valid;
+        }
+        
+        // verifica a fração deste objeto
+        this.valid = true ;
+        String errorMessage = "Ops! Apenas números inteiros maiores que zero são aceitos para numerador e denominador.";
+        if ( this.getDenominador() == 0 || this.getNumerador()== 0 ){
+            this.warnings.add(errorMessage);
+            this.valid = false ;
+        }
+        
+        // verifica as demais frações que compõem o cálculo são válidas
+        if( this.valid && ! this.fracs.isEmpty() ) {
+            for (Fracao frac : fracs) {
+               if ( frac.getDenominador() == 0 || frac.getNumerador() == 0 ){
+                    this.warnings.add(errorMessage);
+                    this.valid = false ;
+                    break;
+                } 
+            }
+        }
+        
+        return this.valid ;
     }
     
     /**
@@ -309,44 +360,46 @@ public class Fracao {
      * @return ArrayList
      */
     public ArrayList<String> getTypes(){
+        Fracao rst = this.getResult();
+        
         if ( ! this.getWarnings().isEmpty() ) {
-            return this.types ;
+            return this.types;
         }
         
         //Unitária: o numerador é igual a 1 e o denominador é um inteiro positivo.
-        if ( this.getNumerador() == 1 && this.getDenominador() > 0 && this.getDenominador() % 1 == 0 ) {
-            this.types.add("Unitária");
+        if ( rst.getNumerador() == 1 && rst.getDenominador() > 0 && rst.getDenominador() % 1 == 0 ) {
+            rst.types.add("Unitária");
         }
         
         //Aparente: O numerador é múltiplo ao denominador
-        if ( this.getNumerador() % this.getDenominador() == 0 ) {
-            this.types.add("Aparente") ;
+        if ( rst.getNumerador() % rst.getDenominador() == 0 ) {
+            rst.types.add("Aparente") ;
         }
         
         //Equivalente: Mantêm a mesma proporção de outra fração
-         if ( this.isEquivalentType(this.getNumerador(), this.getDenominador()) ) {
-            this.types.add("Equivalente");
+         if ( rst.isEquivalentType(rst.getNumerador(), rst.getDenominador()) ) {
+            rst.types.add("Equivalente");
         }
         
         //Própria: O numerador é menor que o denominador
-        if ( this.getNumerador() < this.getDenominador() ) {
-            this.types.add("Própria") ;
+        if ( rst.getNumerador() < rst.getDenominador() ) {
+            rst.types.add("Própria") ;
         }
         else {
-            this.types.add("Imprópria") ;
+            rst.types.add("Imprópria") ;
         }
         
         //Irredutível: o numerador e o denominador são primos entre si, não permitindo simplificação
-        if ( this.isPrimeNumbers(this.getNumerador(), this.getDenominador()) ) {
-            this.types.add("Irredutível");
+        if ( rst.isPrimeNumbers(rst.getNumerador(), rst.getDenominador()) ) {
+            rst.types.add("Irredutível");
         }
         
         //Decimal: O denominador é uma potência de 10
-        if ( this.getDenominador() % 10 == 0 ) {
-            this.types.add("Decimal") ;
+        if ( rst.getDenominador() % 10 == 0 ) {
+            rst.types.add("Decimal") ;
         }
         
-        return this.types;
+        return rst.types;
     }
     
     /**
@@ -358,7 +411,7 @@ public class Fracao {
      * @return 
      */
     private Boolean isEquivalentType(int a, int b){
-        return this.MDC(a, b) > 1 ;
+        return this.MDC(a, b) > 1 || this.MDC(b, a) > 1  ;
     }
     
     /**
@@ -414,7 +467,7 @@ public class Fracao {
      * @return Fracao
      */
     public Fracao getResult() {
-        if ( result == null ) {
+        if ( result == null && valid == null ) {
             this.calculate();
         }
         
@@ -430,8 +483,12 @@ public class Fracao {
      * @return Fracao
      */
     public Fracao getSimplifiedResult() {
-        if ( result == null ) {
+        if ( result == null && valid == null ) {
             this.calculate();
+        }
+        
+        if( ! this.isValid() ){
+            return this.result ;
         }
         
         // Uma fração pode ser simplificada quando numerador e denominador não 
@@ -466,7 +523,7 @@ public class Fracao {
      * 
      * @return String
      */
-    public String getPrettyRealResult(){
+    public String getDecimalResult(){
         return this.getRealResult().toString().replace(".", ",");
     }
     
@@ -476,10 +533,13 @@ public class Fracao {
      * @return Double
      */
     public Double getRealResult() {
+         if( ! this.isValid() ){
+            return 0.0 ;
+        }
+         
         BigDecimal bigNumerador = new BigDecimal(this.getResult().getNumerador().toString());
         BigDecimal bigDivisor = new BigDecimal(this.getResult().getDenominador().toString());
-
-       return bigNumerador.divide(bigDivisor, 16, RoundingMode.HALF_UP).doubleValue();
+        return bigNumerador.divide(bigDivisor, 16, RoundingMode.HALF_UP).doubleValue();
     }
     
     /**
@@ -499,5 +559,4 @@ public class Fracao {
     public void setOperador(String operador) {
         this.operador = operador;
     }
-
 }
