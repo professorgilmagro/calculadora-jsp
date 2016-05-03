@@ -191,7 +191,6 @@ form.calculator table.calc-board tr.visor #calc-screen{
     font-size: 0.6em;
     text-align: right;
     width: 98%;
-    overflow: hidden;
     display: block;
 }
 

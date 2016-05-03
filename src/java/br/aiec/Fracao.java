@@ -167,7 +167,25 @@ public class Fracao {
         this.denominador = denominador;
     }
     
-     /**
+    /**
+     * Retorna o operador de relação com o objeto 
+     * 
+     * @return 
+     */
+    public String getOperador() {
+        return operador;
+    }
+    
+    /**
+     * Define o operador de cálculo para este objeto 
+     * 
+     * @param operador
+     */
+    public void setOperador(String operador) {
+        this.operador = operador;
+    }
+    
+    /**
      * Efetua o cálculo da fração
      * As frações serão solucionadas em pares, seguindo a prioridade conforme
      * a sequência: Divisão, multiplicação, soma e subtração.
@@ -271,9 +289,9 @@ public class Fracao {
     /**
     * Efetua a subtração desta fração com a fração informada no parâmetro
     * 
-     * @param frac  Fração a ser subtraída
-     * 
-     * @return Fracao
+    * @param frac  Fração a ser subtraída
+    * 
+    * @return Fracao
     */
     public Fracao subtrair( Fracao frac ){
         int newDenominador = this.MMC(this.getDenominador(), frac.getDenominador());
@@ -288,9 +306,9 @@ public class Fracao {
     * Efetua a divisão desta fração com a fração informada no parâmetro
     * Para tanto, multiplicamos a primeira fração pelo inverso da segunda
     * 
-     * @param frac  Fração a ser multiplicada
-     * 
-     * @return Fracao
+    * @param frac  Fração a ser multiplicada
+    * 
+    * @return Fracao
     */
     public Fracao multiplicar( Fracao frac ){
         int newNumerador = this.getNumerador() * frac.getNumerador();
@@ -543,20 +561,25 @@ public class Fracao {
     }
     
     /**
-     * Retorna o operador de relação com o objeto 
+     * Retorna a expressão matemática com base neste objeto
      * 
-     * @return 
+     * @return String
      */
-    public String getOperador() {
-        return operador;
-    }
-    
-    /**
-     * Define o operador de cálculo para este objeto 
-     * 
-     * @param operador
-     */
-    public void setOperador(String operador) {
-        this.operador = operador;
+    public String getMathExpression(){
+        String exp = String.format("%d/%d", this.getNumerador(), this.getDenominador());
+        if ( this.getDenominador().equals(1) ) {
+            exp = this.getNumerador().toString();
+        }
+        
+        for ( Fracao frac : this.fracs ) {
+            String aux = String.format("%d/%d", frac.getNumerador(), frac.getDenominador());
+            if(frac.getDenominador().equals(1)){
+                aux = frac.getNumerador().toString();
+            }
+            
+            exp += String.format("%s %s", frac.getOperador(), aux);
+        }
+        
+        return exp;
     }
 }

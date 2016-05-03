@@ -5,6 +5,8 @@
  */
 package br.aiec.helpers;
 
+import br.aiec.Fracao;
+import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -14,6 +16,11 @@ import javax.servlet.http.HttpSession;
  */
 public class Historic {
     private HttpSession _session ;
+    
+    /**
+     * Recebe a lista de items do historico de sessão
+     */
+    private ArrayList<Fracao> items = new ArrayList<Fracao>();
     
      /**
      * Construtor da classe. 
@@ -25,9 +32,10 @@ public class Historic {
         this._session = request.getSession();
     }
     
-    public void Add(){
+    public void Add(Fracao frac){
+        this.items.add(frac);
         if( this._session.isNew() ) {
-            this._session.setAttribute( "historico" , null);
+            this._session.setAttribute( "historico" , items);
         }
     }
 }

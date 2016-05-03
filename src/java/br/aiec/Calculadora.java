@@ -65,7 +65,7 @@ public class Calculadora extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         String mathText = request.getParameter("mathText");
         
-        Fracao result = this._getResult(mathText);
+        Fracao result = this._getResultFromMathTeX(mathText);
         String simplificado = result.getSimplifiedResult().getPrettyMathResult();
         String resultado = result.getPrettyMathResult() ;
         if ( simplificado.equals(resultado) ) {
@@ -75,6 +75,7 @@ public class Calculadora extends HttpServlet {
         request.setAttribute("resultado", resultado);
         request.setAttribute("resultadoSimplificado", simplificado);
         request.setAttribute("resultadoDecimal", result.getDecimalResult());
+        request.setAttribute("expressao", result.getMathExpression());
         request.setAttribute("avisos", result.getWarnings());
         request.setAttribute("tipos", result.getTypes());
         
@@ -82,18 +83,19 @@ public class Calculadora extends HttpServlet {
     }
     
     /**
-     * Prepara o objeto fracao para os calculos e retorna uma fracao de resultado
+     * Popula o objeto fracao para os calculos e retorna uma fracao de resultado
      * 
-     * @param mathText  Composição textual do cálculo (fórmula)
+     * @param mathText  Composição textual do cálculo
+     * 
      * @return Fracao
      */
-    private Fracao _getResult( String mathText ){
+    private Fracao _getResultFromMathTeX( String mathText ){
         String[] fracs = mathText.split("\\+|-|×|÷");
-        List<String> ops = new ArrayList<String>();
+        List<String> operators = new ArrayList<String>();
         
         Matcher m = Pattern.compile("\\+|-|×|÷").matcher(mathText);
         while (m.find()) {
-            ops.add(m.group(0));
+            operators.add(m.group(0));
         }
         
         Fracao mainFrac = null ;
@@ -108,7 +110,7 @@ public class Calculadora extends HttpServlet {
                 continue;
             }
             
-            mainFrac.add( new Fracao(numerador, denominador, ops.get(i-1)) );
+            mainFrac.add( new Fracao(numerador, denominador, operators.get(i-1)) );
         }
         
         return mainFrac;
