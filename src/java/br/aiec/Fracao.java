@@ -219,7 +219,8 @@ public class Fracao {
             Fracao curFrac = fracs.get(i);
             if(curFrac.getOperador().equals(operator.DIVISION.getSign())) {
                 Fracao prevFrac = i > 0 ? fracs.get(i-1) : this;
-                fracParts.set(i, prevFrac.dividir(curFrac));
+                String newSign = i == 0 ? "" : prevFrac.getOperador();
+                fracParts.set(i, prevFrac.dividir(curFrac, newSign));
                 fracParts.remove(prevFrac);
                 continue;
             }
@@ -230,104 +231,108 @@ public class Fracao {
         /**
          * Nesta segunda iteração, efetuamos os cálculos de multiplicação.
          */
-        for (int i = 0; i < fracParts.size() && fracParts.size() > 1; i++) {
+        for (int i = 1; i < fracParts.size() && fracParts.size() > 1; i++) {
             Fracao curFrac = fracParts.get(i);
             if( curFrac.getOperador().equals(operator.MULTIPLICATION.getSign())) {
                 Fracao prevFrac = fracParts.get(i-1);
-                fracParts.set(i, prevFrac.multiplicar(curFrac));
+                String newSign = i == 1 ? "" : prevFrac.getOperador();
+                fracParts.set(i, prevFrac.multiplicar(curFrac , newSign ));
                 fracParts.remove(prevFrac);
             }
         }
         
         /**
-         * Nesta terceira iteração, efetuamos os cálculos de soma e a redução
-         * dos termos.
+         * Nesta terceira iteração, efetuamos os cálculos de soma  e subtração
+         * na ordem como os termos foram construídos.
+         * Ao término destas operações, as expressões são reduzidas conforme os
+         * cálculos são efetuados até que reste somente uma fração que é o
+         * resultado final da expressão.
          */
-        for (int i = 0; i < fracParts.size() && fracParts.size() > 1; i++) {
-            Fracao curFrac = fracParts.get(i);
-            if( curFrac.getOperador().equals(operator.ADDITION.getSign())) {
+        while( fracParts.size() > 1 ) {
+            for (int i = 1; i < fracParts.size(); i++) {
+                Fracao curFrac = fracParts.get(i);
                 Fracao prevFrac = fracParts.get(i-1);
-                fracParts.set(i, prevFrac.somar(curFrac));
+
+                String newSign = i == 1 ? "" : prevFrac.getOperador();
+
+                Fracao fracOut ;
+                if( curFrac.getOperador().equals(operator.ADDITION.getSign())) {
+                    fracOut = prevFrac.somar(curFrac, newSign);
+                } else {
+                    fracOut = prevFrac.subtrair(curFrac, newSign);
+                }
+
+                fracOut.setOperador(newSign);
+                fracParts.set(i, fracOut);
                 fracParts.remove(prevFrac);
             }
         }
-        
-        /**
-         * Nesta quarta e última iteração, efetuamos os cálculos de subtação e a
-         * redução dos termos.
-         * Se tiver tudo certo, após a execução desta etapa, deverá restar apenas
-         * um item que será o resultado do cálculo.
-         */
-        for (int i = 0; i < fracParts.size() && fracParts.size() > 1; i++) {
-            Fracao curFrac = fracParts.get(i);
-            if( curFrac.getOperador().equals(operator.SUBTRACTION.getSign())) {
-                Fracao prevFrac = fracParts.get(i-1);
-                fracParts.set(i, prevFrac.subtrair(curFrac));
-                fracParts.remove(prevFrac);
-            }
-        }
-        
+         
         this.result = fracParts.get(0);
     }
     
     /**
     * Efetua a soma desta fração com a fração informada no parâmetro
     * 
-     * @param frac  Fração a ser somada
-     * 
+    * @param frac          Fração a ser somada
+    * @param newOperator   Operador a ser atribuído à fração resultante do cálculo
+    * 
      * @return Fracao
     */
-    public Fracao somar( Fracao frac ){
+    public Fracao somar( Fracao frac , String newOperator ){
         int newDenominador = this.MMC(this.getDenominador(), frac.getDenominador());
         int num1 = newDenominador/this.getDenominador() * this.getNumerador();
         int num2 = newDenominador/frac.getDenominador() * frac.getNumerador();
         int newNumerador = num1 + num2;
         
-        return new Fracao(newNumerador, newDenominador, this.getOperador());
+        return new Fracao(newNumerador, newDenominador, newOperator);
     }
     
     /**
     * Efetua a subtração desta fração com a fração informada no parâmetro
     * 
-    * @param frac  Fração a ser subtraída
+    * @param frac           Fração a ser subtraída
+    * @param newOperator    Operador a ser atribuído à fração resultante do cálculo
     * 
     * @return Fracao
     */
-    public Fracao subtrair( Fracao frac ){
+    public Fracao subtrair( Fracao frac, String newOperator ){
         int newDenominador = this.MMC(this.getDenominador(), frac.getDenominador());
         int num1 = newDenominador/this.getDenominador() * this.getNumerador();
         int num2 = newDenominador/frac.getDenominador() * frac.getNumerador();
         int newNumerador = num1 - num2;
         
-        return new Fracao(newNumerador, newDenominador, this.getOperador());
+        return new Fracao(newNumerador, newDenominador, newOperator);
     }
     
     /**
     * Efetua a divisão desta fração com a fração informada no parâmetro
     * Para tanto, multiplicamos a primeira fração pelo inverso da segunda
     * 
-    * @param frac  Fração a ser multiplicada
+    * @param frac           Fração a ser subtraída
+    * @param newOperator    Operador a ser atribuído à fração resultante do cálculo
     * 
     * @return Fracao
     */
-    public Fracao multiplicar( Fracao frac ){
+    public Fracao multiplicar( Fracao frac, String newOperator ){
         int newNumerador = this.getNumerador() * frac.getNumerador();
         int newDenominador = this.getDenominador() * frac.getDenominador();
-        return new Fracao(newNumerador, newDenominador, this.getOperador());
+        return new Fracao(newNumerador, newDenominador, newOperator);
     }
     
     /**
     * Efetua a divisão desta fração com a fração informada no parâmetro
     * Para tanto, multiplicamos a primeira fração pelo inverso da segunda
     * 
-    * @param frac Fração a ser utilizada como divisor deste objeto
+    * @param frac           Fração a ser subtraída
+    * @param newOperator    Operador a ser atribuído à fração resultante do cálculo
     * 
     * @return Fracao
     */
-    public Fracao dividir( Fracao frac ){
+    public Fracao dividir( Fracao frac, String newOperator ){
         int newNumerador = this.getNumerador() * frac.getDenominador();
         int newDenominador = this.getDenominador() * frac.getNumerador();
-        return new Fracao(newNumerador, newDenominador, this.getOperador());
+        return new Fracao(newNumerador, newDenominador, newOperator);
     }
     
     /**

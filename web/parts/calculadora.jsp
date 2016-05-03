@@ -39,8 +39,8 @@
                     <div class="cursor-frac"><span class="active" >x</span><span class="line" >&nbsp;</span><span>y</span></div>
                     <div class="details <%= hasResult && ! hasWarnings ? "" : "hide" %>">
                         <ul>
-                            <li>Decimal: <span class="decimal" >`<%= resultadoDecimal %>`</span></li>
-                            <li class="<%= resultadoSimplificado == null || resultadoSimplificado.isEmpty() ? "hide" : "" %>">Simplificação: <span class="math" >`<%= resultadoSimplificado %>`</span></li>
+                            <li>Valor Decimal: <span class="decimal" >`<%= resultadoDecimal %>`</span></li>
+                            <li class="<%= resultadoSimplificado == null || resultadoSimplificado.isEmpty() ? "hide" : "" %>">Fração Simplificada: <span class="math" >`<%= resultadoSimplificado %>`</span></li>
                         </ul>
                     </div>
                     <div id="calc-screen">
