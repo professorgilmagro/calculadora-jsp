@@ -158,7 +158,7 @@ $(function(){
                var calc = this ;
                $(settings.buttons.operator).on( "click" , function(){
                     var s = calc.getTeX().substr(-1,1);
-                    if ( s === calc.FRAC_SEPARATOR || $.inArray(s, calc.OPERATORS) !== -1 ){
+                    if ( s === calc.FRAC_SEPARATOR || $.inArray(s, calc.OPERATORS) !== -1 || $.isEmptyObject( calc.getTeX() ) ){
                         return ;
                     }
                    
