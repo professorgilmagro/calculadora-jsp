@@ -47,9 +47,9 @@
                     <%
                         History historico = (History) request.getAttribute("historico");
                     %>
-			<aside class="history">
+			<aside class="history <%= historico == null || historico.isEmpty() ? "hide" : "" %>">
 				<table>
-					<caption><img  src="assets/images/calculator.png" class="icon"> Cálculos recentes</caption>
+					<caption><img src="assets/images/calculator.png" class="icon"> Cálculos recentes</caption>
 					<thead>
 						<tr>
                                                     <th>Expressão</th>

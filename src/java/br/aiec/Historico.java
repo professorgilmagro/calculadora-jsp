@@ -17,8 +17,13 @@ import javax.servlet.http.HttpServletResponse;
  * 
  * @author GRA (Anne, Gilmar Ricardo)
  */
-@WebServlet(name = "Historico", urlPatterns = {"/historico"})
+@WebServlet(name = "Historico", urlPatterns = {"/historico", "/historico/remover"})
 public class Historico extends HttpServlet {
+    
+    /**
+     * Constante para ação de remoção de histórico
+     */
+    public final static String ACTION_REMOVE = "remove";
     
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -34,9 +39,14 @@ public class Historico extends HttpServlet {
         
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
+        History history = History.getInstance(request);
+        if ( request.getParameter("action") != null && request.getParameter("action").equals(ACTION_REMOVE) && request.getParameter("idx") != null ) {
+            int idx = Integer.parseInt(request.getParameter("idx"));
+            if ( history.getItems().size() - 1 >= idx ) history.getItems().remove(idx);
+        }
         
         try {
-           request.setAttribute("historico", History.getInstance(request));
+           request.setAttribute("historico", history);
            request.getRequestDispatcher("historico.jsp").include(request, response);
         } finally {
             out.close();

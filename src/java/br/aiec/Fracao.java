@@ -220,7 +220,8 @@ public class Fracao {
             if(curFrac.getOperador().equals(operator.DIVISION.getSign())) {
                 Fracao prevFrac = i > 0 ? fracs.get(i-1) : this;
                 String newSign = i == 0 ? "" : prevFrac.getOperador();
-                fracParts.set(i, prevFrac.dividir(curFrac, newSign));
+                int idx = i == fracParts.size() ? i-1 : i;
+                fracParts.set(idx, prevFrac.dividir(curFrac, newSign));
                 fracParts.remove(prevFrac);
                 continue;
             }
@@ -385,7 +386,7 @@ public class Fracao {
     public ArrayList<String> getTypes(){
         Fracao rst = this.getResult();
         
-        if ( ! this.getWarnings().isEmpty() || ! rst.types.isEmpty() ) {
+        if ( ! this.getWarnings().isEmpty() || ! rst.types.isEmpty() || rst.getNumerador().equals(0) ) {
             return rst.types;
         }
         
@@ -512,6 +513,11 @@ public class Fracao {
         
         if( ! this.isValid() ){
             return this.result ;
+        }
+        
+        // Se o resultado é zero, não há motivo para fazer as demais verificações
+        if ( result.getNumerador().equals(0) ){
+            return result;
         }
         
         // Uma fração pode ser simplificada quando numerador e denominador não 

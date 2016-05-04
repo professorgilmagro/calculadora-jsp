@@ -1,3 +1,4 @@
+<%@page import="br.aiec.Historico"%>
 <%@page import="br.aiec.helpers.History"%>
 <%@page import="br.aiec.Fracao"%>
 <%@page import="java.util.ArrayList"%>
@@ -37,13 +38,15 @@
 							<th>Simplificação</th>
 							<th>Valor Decimal</th>
 							<th>Classificação</th>
+							<th>Remover</th>
 						</tr>
 					</thead>
 					<tbody>
                                                 <%
                                                     History historico = (History) request.getAttribute("historico");
                                                     if( historico != null && ! historico.isEmpty()){
-                                                        for( Fracao frac : historico.getItems() ) {
+                                                        for( int i = 0; i < historico.getItems().size(); i++ ) {
+                                                            Fracao frac = historico.getItems().get(i);
                                                 %>
 						<tr>
 							<td>`<%= frac.getMathExpression() %>`</td>
@@ -51,6 +54,7 @@
 							<td>`<%= frac.getSimplifiedResult().getMathExpression() %>`</td>
 							<td><%= frac.getDecimalResult() %></td>
 							<td><%= frac.getTypes().toString() %></td>
+                                                        <td><a onclick="return confirm('Tem certeza que deseja excluir este item?')" href="historico?action=<%= Historico.ACTION_REMOVE %>&idx=<%= i %>"><img src="assets/images/delete.png"></a></td>
 						</tr>
                                                 <%
                                                         }
