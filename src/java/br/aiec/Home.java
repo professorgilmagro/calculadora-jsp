@@ -3,6 +3,7 @@
  */
 package br.aiec;
 
+import br.aiec.helpers.History;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -37,6 +38,7 @@ public class Home extends HttpServlet {
         try {
            request.setAttribute("resultado", "");
            request.setAttribute("categoria", "");
+           request.setAttribute("historico", History.getInstance(request) );
            request.getRequestDispatcher("index.jsp").forward(request, response);
         } finally {
             out.close();

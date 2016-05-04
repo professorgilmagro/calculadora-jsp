@@ -3,6 +3,7 @@
  */
 package br.aiec;
 
+import br.aiec.helpers.History;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -35,6 +36,7 @@ public class Historico extends HttpServlet {
         PrintWriter out = response.getWriter();
         
         try {
+           request.setAttribute("historico", History.getInstance(request));
            request.getRequestDispatcher("historico.jsp").include(request, response);
         } finally {
             out.close();

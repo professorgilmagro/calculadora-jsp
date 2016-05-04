@@ -4,6 +4,7 @@ package br.aiec;
  * Página de controle da página de Calculadora
  */
 
+import br.aiec.helpers.History;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -44,6 +45,7 @@ public class Calculadora extends HttpServlet {
            request.setAttribute("resultadoSimplificado", "");
            request.setAttribute("resultadoDecimal", "");
            request.setAttribute("tipos", new ArrayList<String>());
+           request.setAttribute("historico", History.getInstance(request));
            request.getRequestDispatcher("calculadora.jsp").forward(request, response);
         } finally {
             out.close();
@@ -72,12 +74,21 @@ public class Calculadora extends HttpServlet {
             simplificado = "";
         }
         
+        /**
+         * Se a fração é válida, logo não há avisos de erros
+         * Então guardá-la-emos no histórico
+         */
+        if ( result.getWarnings().isEmpty() ) {
+            History.getInstance(request).add(result);
+        }
+        
         request.setAttribute("resultado", resultado);
         request.setAttribute("resultadoSimplificado", simplificado);
         request.setAttribute("resultadoDecimal", result.getDecimalResult());
         request.setAttribute("expressao", result.getMathExpression());
         request.setAttribute("avisos", result.getWarnings());
         request.setAttribute("tipos", result.getTypes());
+        request.setAttribute("historico", request.getSession().getAttribute("historico") );
         
        request.getRequestDispatcher("calculadora.jsp").forward(request, response);
     }

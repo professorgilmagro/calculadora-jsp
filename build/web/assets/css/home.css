@@ -31,8 +31,8 @@ aside.history table thead th{
 
 aside.history table tbody td{
     font-weight: normal;
-    font-size: 0.9em;
-    padding: 5px 2px;
+    font-size: 0.6em;
+    padding: 10px 2px;
     text-align: center;
     border-bottom: 1px solid darkgrey;
 }
@@ -43,6 +43,15 @@ aside.history table tbody td img{
 
 aside.history table tbody td:first-child{
     text-align: left;
+}
+
+aside.history table tbody tr:last-child td{
+    text-align: center;
+    font-size: 0.9em;
+}
+
+aside.history table tbody tr:last-child td a{
+    text-decoration: none;
 }
 
 aside.history table caption{

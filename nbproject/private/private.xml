@@ -4,11 +4,19 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/home/gilmar/projects/calculadora-jsp/src/java/br/aiec/Fracao.java</file>
+            <file>file:/home/gilmar/projects/calculadora-jsp/src/java/br/aiec/Home.java</file>
             <file>file:/home/gilmar/projects/calculadora-jsp/web/assets/js/calculator.js</file>
             <file>file:/home/gilmar/projects/calculadora-jsp/web/assets/css/calculadora.css</file>
             <file>file:/home/gilmar/projects/calculadora-jsp/web/assets/css/base.css</file>
+            <file>file:/home/gilmar/projects/calculadora-jsp/web/parts/menu.jsp</file>
             <file>file:/home/gilmar/projects/calculadora-jsp/src/java/br/aiec/Calculadora.java</file>
+            <file>file:/home/gilmar/projects/calculadora-jsp/web/historico.jsp</file>
+            <file>file:/home/gilmar/projects/calculadora-jsp/web/index.jsp</file>
+            <file>file:/home/gilmar/projects/calculadora-jsp/src/java/br/aiec/Historico.java</file>
+            <file>file:/home/gilmar/projects/calculadora-jsp/web/assets/css/home.css</file>
+            <file>file:/home/gilmar/projects/calculadora-jsp/src/java/br/aiec/helpers/History.java</file>
             <file>file:/home/gilmar/projects/calculadora-jsp/web/parts/calculadora.jsp</file>
+            <file>file:/home/gilmar/projects/calculadora-jsp/web/assets/css/historico.css</file>
         </group>
     </open-files>
 </project-private>

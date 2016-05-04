@@ -1,3 +1,5 @@
+<%@page import="br.aiec.Fracao"%>
+<%@page import="br.aiec.helpers.History"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -42,79 +44,41 @@
 		<%@ include file="/parts/calculadora.jsp" %>	
 		</section>
 		<section class="content-right" >
+                    <%
+                        History historico = (History) request.getAttribute("historico");
+                    %>
 			<aside class="history">
 				<table>
 					<caption><img  src="assets/images/calculator.png" class="icon"> Cálculos recentes</caption>
 					<thead>
 						<tr>
-							<th>Cálculo</th>
-							<th>Resultado</th>
-							<th>Classificação</th>
+                                                    <th>Expressão</th>
 						</tr>
 					</thead>
 					<tbody>
+                                            <%
+                                                // imprime somente os últimos 10 cálculos
+                                                if( historico != null && ! historico.isEmpty()){
+                                                    int count = 0;
+                                                    ArrayList<Fracao> items = historico.getItems();
+                                                    for( int i = items.size() - 1; i >= 0 && count <= 10; i-- ){
+                                                        Fracao frac = (Fracao) items.get(i);
+                                                        count++;
+                                            %>
 						<tr>
-							<td><span class="numerador">9.4</span><img src="assets/images/small-div.png"><span class="divisor">3</span></td>
-							<td>3,13</td>
-							<td>Imprópria</td>
+                                                    <td>`<%= frac.getMathExpression() %>`</td>
 						</tr>
-						<tr>
-							<td><span class="numerador">36</span><img src="assets/images/small-div.png"><span class="divisor">12</span></td>
-							<td>3</td>
-							<td>Aparente</td>
-						</tr>
-						<tr>
-							<td><span class="numerador">5</span><img src="assets/images/small-div.png"><span class="divisor">6</span></td>
-							<td>0,83</td>
-							<td>Própria</td>
-						</tr>
-						<tr>
-							<td><span class="numerador">23</span><img src="assets/images/small-div.png"><span class="divisor">1.25</span></td>
-							<td>18,4</td>
-							<td>Imprópria</td>
-						</tr>
-						<tr>
-							<td><span class="numerador">12</span><img src="assets/images/small-div.png"><span class="divisor">2</span></td>
-							<td>6</td>
-							<td>Aparente</td>
-						</tr>
-						<tr>
-							<td><span class="numerador">30</span><img src="assets/images/small-div.png"><span class="divisor">2.2</span></td>
-							<td>13,63</td>
-							<td>Imprópria</td>
-						</tr>
-						<tr>
-							<td><span class="numerador">3.6</span><img src="assets/images/small-div.png"><span class="divisor">36</span></td>
-							<td>0,1</td>
-							<td>Própria</td>
-						</tr>
-						<tr>
-							<td><span class="numerador">380</span><img src="assets/images/small-div.png"><span class="divisor">33</span></td>
-							<td>11,51</td>
-							<td>Imprópria</td>
-						</tr>
+                                            <%
+                                                    }
+                                                    
+                                                    String link = String.format("<tr><td><a href=\"%s/historico\">Clique aqui para ver os resultados</a></td></tr>", request.getContextPath());
+                                                    out.print(link);
+                                                }
+                                            %>
 					</tbody>
 				</table>
 			</aside>
 		</section>
 		<%@ include file="/parts/footer.jsp" %>
-	
-        
-       <script>
-//            window.MathJax = {
-//              AuthorInit: function() {
-//                MathJax.Hub.Register.StartupHook("End", function() {
-//                  MathJax.Hub.processSectionDelay = 0;
-//                  var demoSource = document.getElementById('demoSource');
-//                  var demoRendering = document.getElementById('demoRendering');
-//                  var math = MathJax.Hub.getAllJax("demoRendering")[0];
-//                  $(demoSource).on("change" , function() {
-//                    MathJax.Hub.Queue(["Text", math, demoSource.value]);
-//                  });
-//                });
-//              }
-//            };
-      	</script>
-        
         </body>
 </html>

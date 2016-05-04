@@ -385,8 +385,8 @@ public class Fracao {
     public ArrayList<String> getTypes(){
         Fracao rst = this.getResult();
         
-        if ( ! this.getWarnings().isEmpty() ) {
-            return this.types;
+        if ( ! this.getWarnings().isEmpty() || ! rst.types.isEmpty() ) {
+            return rst.types;
         }
         
         //Unitária: o numerador é igual a 1 e o denominador é um inteiro positivo.

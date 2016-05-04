@@ -5,7 +5,7 @@
         String resultadoSimplificado = (String) request.getAttribute("resultadoSimplificado");
         String resultadoDecimal = (String) request.getAttribute("resultadoDecimal");
         ArrayList<String> tipos = (ArrayList<String>) request.getAttribute("tipos");
-        ArrayList<String> avisos = (ArrayList<String>) request.getAttribute("avisos");
+        ArrayList<String> avisos = (ArrayList<String>) request.getAttribute("avisos");        
         Boolean hasResult = resultado != null && ! resultado.isEmpty() ;
         Boolean hasWarnings = avisos != null && ! avisos.isEmpty() ;
     %>
