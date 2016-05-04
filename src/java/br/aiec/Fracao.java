@@ -207,49 +207,47 @@ public class Fracao {
         }
         
         /**
-         * Nesta primeira iteração, efetuamos os cálculos de divisão e carregamos
-         * as frações existentes numa nova lista para não modificar a original.
          * As partes que compõem o cálculo, são solucionados em pares e vão sendo
-         * diluídos até a obtenção do resultado final
+         * diluídos até a obtenção de apenas um item que é o resultado final
          */
         ArrayList<Fracao> fracParts = new ArrayList<Fracao>();
         
         fracParts.add(this);
-        for (int i = 0; i < fracs.size() && fracs.size() > 0 ; i++) {
-            Fracao curFrac = fracs.get(i);
-            if(curFrac.getOperador().equals(operator.DIVISION.getSign())) {
-                Fracao prevFrac = i > 0 ? fracs.get(i-1) : this;
-                String newSign = i == 0 ? "" : prevFrac.getOperador();
-                int idx = i == fracParts.size() ? i-1 : i;
-                fracParts.set(idx, prevFrac.dividir(curFrac, newSign));
-                fracParts.remove(prevFrac);
-                continue;
-            }
-            
-            fracParts.add(curFrac);
-        }
+        fracParts.addAll(fracs);
         
-        /**
-         * Nesta segunda iteração, efetuamos os cálculos de multiplicação.
-         */
-        for (int i = 1; i < fracParts.size() && fracParts.size() > 1; i++) {
-            Fracao curFrac = fracParts.get(i);
-            if( curFrac.getOperador().equals(operator.MULTIPLICATION.getSign())) {
-                Fracao prevFrac = fracParts.get(i-1);
-                String newSign = i == 1 ? "" : prevFrac.getOperador();
-                fracParts.set(i, prevFrac.multiplicar(curFrac , newSign ));
-                fracParts.remove(prevFrac);
-            }
-        }
-        
-        /**
-         * Nesta terceira iteração, efetuamos os cálculos de soma  e subtração
-         * na ordem como os termos foram construídos.
-         * Ao término destas operações, as expressões são reduzidas conforme os
-         * cálculos são efetuados até que reste somente uma fração que é o
-         * resultado final da expressão.
-         */
         while( fracParts.size() > 1 ) {
+            /**
+             * Nesta iteração, efetuamos os cálculos de divisão.
+             */
+            for (int i = 1; i < fracParts.size(); i++) {
+                Fracao curFrac = fracParts.get(i);
+                if(curFrac.getOperador().equals(operator.DIVISION.getSign())) {
+                    Fracao prevFrac = fracParts.get(i-1);
+                    String newSign = i == 1 ? "" : prevFrac.getOperador();
+                    fracParts.set(i, prevFrac.dividir(curFrac , newSign ));
+                    fracParts.remove(prevFrac);
+                    if( i < fracParts.size() ) i = 0;
+                }           
+            }
+
+            /**
+             * Nesta segunda iteração, efetuamos os cálculos de multiplicação.
+             */
+            for (int i = 1; i < fracParts.size(); i++) {
+                Fracao curFrac = fracParts.get(i);
+                if(curFrac.getOperador().equals(operator.MULTIPLICATION.getSign())) {
+                    Fracao prevFrac = fracParts.get(i-1);
+                    String newSign = i == 1 ? "" : prevFrac.getOperador();
+                    fracParts.set(i, prevFrac.multiplicar(curFrac , newSign ));
+                    fracParts.remove(prevFrac);
+                    if( i < fracParts.size() ) i = 0;
+                }
+            }
+
+            /**
+             * Nesta terceira iteração, efetuamos os cálculos de soma  e subtração
+             * na ordem como os termos foram constituídos.
+             */
             for (int i = 1; i < fracParts.size(); i++) {
                 Fracao curFrac = fracParts.get(i);
                 Fracao prevFrac = fracParts.get(i-1);

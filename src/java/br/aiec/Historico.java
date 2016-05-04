@@ -39,16 +39,18 @@ public class Historico extends HttpServlet {
         
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        History history = History.getInstance(request);
-        if ( request.getParameter("action") != null && request.getParameter("action").equals(ACTION_REMOVE) && request.getParameter("idx") != null ) {
-            int idx = Integer.parseInt(request.getParameter("idx"));
-            if ( history.getItems().size() - 1 >= idx ) history.getItems().remove(idx);
-        }
         
         try {
+            History history = History.getInstance(request);
+            if ( request.getParameter("action") != null && request.getParameter("action").equals(ACTION_REMOVE) && request.getParameter("idx") != null ) {
+                int idx = Integer.parseInt( request.getParameter("idx") ) ;
+                history.remove(idx);
+            }
+            
            request.setAttribute("historico", history);
            request.getRequestDispatcher("historico.jsp").include(request, response);
-        } finally {
+        } 
+        finally {
             out.close();
         }
     }

@@ -63,34 +63,37 @@ public class Calculadora extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        request.setCharacterEncoding("UTF-8");
-        String mathText = request.getParameter("mathText");
+        try {
+            response.setContentType("text/html;charset=UTF-8");
+            request.setCharacterEncoding("UTF-8");
+            String mathText = request.getParameter("mathText");
+
+            Fracao result = this._getResultFromMathTeX(mathText, response);
+            String simplificado = result.getSimplifiedResult().getPrettyMathResult();
+            String resultado = result.getPrettyMathResult() ;
+            if ( simplificado.equals(resultado) ) {
+                simplificado = "";
+            }
         
-        Fracao result = this._getResultFromMathTeX(mathText);
-        String simplificado = result.getSimplifiedResult().getPrettyMathResult();
-        String resultado = result.getPrettyMathResult() ;
-        if ( simplificado.equals(resultado) ) {
-            simplificado = "";
+            /**
+             * Se a fração é válida, logo não há avisos de erros
+             * Então guardá-la-emos no histórico
+             */
+            if ( result.getWarnings().isEmpty() ) {
+                History.getInstance(request).add(result);
+            }
+        
+            request.setAttribute("resultado", resultado);
+            request.setAttribute("resultadoSimplificado", simplificado);
+            request.setAttribute("resultadoDecimal", result.getDecimalResult());
+            request.setAttribute("expressao", result.getMathExpression());
+            request.setAttribute("avisos", result.getWarnings());
+            request.setAttribute("tipos", result.getTypes());
+            request.setAttribute("historico", request.getSession().getAttribute("historico") );
+        } 
+        finally {
+            request.getRequestDispatcher("calculadora.jsp").forward(request, response);
         }
-        
-        /**
-         * Se a fração é válida, logo não há avisos de erros
-         * Então guardá-la-emos no histórico
-         */
-        if ( result.getWarnings().isEmpty() ) {
-            History.getInstance(request).add(result);
-        }
-        
-        request.setAttribute("resultado", resultado);
-        request.setAttribute("resultadoSimplificado", simplificado);
-        request.setAttribute("resultadoDecimal", result.getDecimalResult());
-        request.setAttribute("expressao", result.getMathExpression());
-        request.setAttribute("avisos", result.getWarnings());
-        request.setAttribute("tipos", result.getTypes());
-        request.setAttribute("historico", request.getSession().getAttribute("historico") );
-        
-       request.getRequestDispatcher("calculadora.jsp").forward(request, response);
     }
     
     /**
@@ -100,7 +103,7 @@ public class Calculadora extends HttpServlet {
      * 
      * @return Fracao
      */
-    private Fracao _getResultFromMathTeX( String mathText ){
+    private Fracao _getResultFromMathTeX( String mathText , HttpServletResponse response  ){
         String[] fracs = mathText.split("\\+|-|×|÷");
         List<String> operators = new ArrayList<String>();
         
@@ -114,13 +117,13 @@ public class Calculadora extends HttpServlet {
             String[] numbers = fracs[i].split("/");
             int numerador = Integer.parseInt(numbers[0]);
             int denominador = numbers.length == 2 ? Integer.parseInt(numbers[1]) : 1;
-            
+
             // cria a fracao que vai gerir o cálculo com a primeira parte da equação
             if ( i == 0 ) {
                 mainFrac = new Fracao(numerador, denominador);
                 continue;
             }
-            
+
             mainFrac.add( new Fracao(numerador, denominador, operators.get(i-1)) );
         }
         
