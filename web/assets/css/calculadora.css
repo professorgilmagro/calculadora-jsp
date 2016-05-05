@@ -262,7 +262,7 @@ form.calculator table.calc-board tr.visor.classification h4{
 }
 
 form.calculator table.calc-board tr.visor.classification ul{
-    margin-left: -2.5em;
+    display: initial;
 }
 
 form.calculator table.calc-board tr.visor.classification ul li{

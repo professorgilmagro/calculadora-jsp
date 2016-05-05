@@ -57,7 +57,7 @@
                     </ul>
                 </td>
             </tr>
-            <tr>
+            <tr class="keyboard" >
                 <td><button id="btn-clean" type="button">C</button></td>
                 <td><button type="button" id="btn-backspace" ><img src="assets/images/back-backspace.png"></button></td>
                 <td><button id="btn-toogle-cursor" type="button"><math><mrow><mfrac><mn><span class="active">a</span></mn><mn><span>b</span></mn></mfrac></mrow></math></button></td>
