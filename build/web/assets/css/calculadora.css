@@ -238,7 +238,7 @@ form.calculator table.calc-board tr.visor td.content div.cursor-frac span.line{
 
 form.calculator table.calc-board tr.visor td.content div.cursor-frac span.active{
     color: #F7F300;
-    background: url("../images/editv2.png") no-repeat 40px 5px;
+    background: url("../images/editv2.png") no-repeat 40px 3px;
 }
 
 form.calculator table.calc-board tr.visor.classification{
