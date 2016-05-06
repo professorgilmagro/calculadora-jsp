@@ -180,7 +180,7 @@ table.calc-board td:last-child{
 }
 
 table.calc-board td button img{
-    width: 40%;
+    height: 40%;
 }
 
 form.calculator table.calc-board tr.visor td.content{

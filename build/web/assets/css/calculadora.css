@@ -204,11 +204,11 @@ button#btn-toogle-cursor mfrac{
     font-family: 'Open Sans Condensed',Arial,sans-serif;
 }
 
-button#btn-toogle-cursor mfrac .active{
+button#btn-toogle-cursor .active{
     color: #00A4A4 !important;
 }
 
-button#btn-toogle-cursor mfrac .active:after{
+button#btn-toogle-cursor .active:after{
     content: "|"
 }
 
