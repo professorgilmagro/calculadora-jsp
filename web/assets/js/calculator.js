@@ -231,8 +231,10 @@ $(function(){
             } ,
             key_events: function() {
                 var calc = this ;
+                
                 $(document).on("keyup" , function(e){
                     e.preventDefault() ;
+                    console.log(e.keyCode)
 
                     switch (e.keyCode) {
                         case 13:
@@ -243,15 +245,18 @@ $(function(){
                         case 46:
                             $(calc.settings.buttons.backspace).trigger("click");
                             break;
+                        
+                        case 56:
+                            $(calc.settings.buttons.operator).filter(":contains(×)").trigger("click");
+                            break;
 
                         case 27:
                         case 67:
                             $(calc.settings.buttons.clean).trigger("click");
                             break;
-
-                        case 111:
-                        case 191:
-                            $(calc.settings.buttons.divisor).trigger("click");
+                        
+                         case 187:
+                            $(calc.settings.buttons.operator).filter(":contains(+)").trigger("click");
                             break;
 
                         case 110:
@@ -260,7 +265,21 @@ $(function(){
                         case 188:
                             $(calc.settings.buttons.decimal).trigger("click");
                             break;
+                            
+                        case 189:
+                            $(calc.settings.buttons.operator).filter(":contains(-)").trigger("click");
+                            break;
+                            
+                        case 111:
+                        case 191:
+                            $(calc.settings.buttons.operator).filter(":contains(÷)").trigger("click");
+                            break;
+                            
+                        case 220:
+                            calc.$cursorView.trigger("click");
+                            break;
                     }
+                        
                 });
 
                 $(document).on( "keypress", function(e){
