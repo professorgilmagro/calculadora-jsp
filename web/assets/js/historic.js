@@ -3,12 +3,13 @@ $(function(){
 		"language": {
 			"processing":   "a processar...",
 			"lengthMenu":   "mostrar _MENU_ registos",
-			"zerorecords":  "não foram encontrados resultados",
-			"info": 		"Monstrando página _PAGE_ de _PAGES_",
-			"infoempty":    "mostrando de 0 até 0 de 0 registos",
-			"infofiltered": "(filtrado de _MAX_ registos no total)",
-			"infopostfix":  "",
+			"zeroRecords":  "Não foram encontrados resultados para a busca informada",
+			"info": 	"Monstrando página _PAGE_ de _PAGES_",
+			"infoEmpty":    "0 registo",
+			"infoFiltered": "(filtrado de _MAX_ registos no total)",
+			"infoPostFix":  "",
 			"search":       "procurar:",
+                        "emptyTable":   "Não há dados de histórico registrado",
 			"paginate": {
 			    "first":    "primeiro",
 			    "previous": "anterior",

@@ -9,6 +9,7 @@
             <file>file:/home/gilmar/projects/calculadora-jsp/web/assets/css/calculadora.css</file>
             <file>file:/home/gilmar/projects/calculadora-jsp/web/assets/css/base.css</file>
             <file>file:/home/gilmar/projects/calculadora-jsp/web/parts/menu.jsp</file>
+            <file>file:/home/gilmar/projects/calculadora-jsp/web/404.jsp</file>
             <file>file:/home/gilmar/projects/calculadora-jsp/web/assets/css/mobile.css</file>
             <file>file:/home/gilmar/projects/calculadora-jsp/src/java/br/aiec/Calculadora.java</file>
             <file>file:/home/gilmar/projects/calculadora-jsp/web/historico.jsp</file>
@@ -16,8 +17,11 @@
             <file>file:/home/gilmar/projects/calculadora-jsp/src/java/br/aiec/Historico.java</file>
             <file>file:/home/gilmar/projects/calculadora-jsp/web/assets/css/home.css</file>
             <file>file:/home/gilmar/projects/calculadora-jsp/src/java/br/aiec/helpers/History.java</file>
+            <file>file:/home/gilmar/projects/calculadora-jsp/web/calculadora.jsp</file>
+            <file>file:/home/gilmar/projects/calculadora-jsp/web/sobre.jsp</file>
             <file>file:/home/gilmar/projects/calculadora-jsp/web/parts/calculadora.jsp</file>
             <file>file:/home/gilmar/projects/calculadora-jsp/web/assets/css/historico.css</file>
+            <file>file:/home/gilmar/projects/calculadora-jsp/web/equipe.jsp</file>
         </group>
     </open-files>
 </project-private>

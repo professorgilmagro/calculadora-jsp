@@ -42,7 +42,7 @@
 		<section class="content">
 			<h1>Histórico</h1>
 			<article class="historic" >
-				<table id="tabela-historico">
+				<table id="tabela-historico" class="table table-responsive">
 					<caption>Histórico de cálculos</caption>
 					<thead>
 						<tr>

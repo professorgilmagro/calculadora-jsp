@@ -1,5 +1,5 @@
 article.historic table{
-    width: 100% ;
+    width: 98% ;
 }
 
 article.historic table tbody{
@@ -11,6 +11,9 @@ article.historic table caption{
     font-weight: bold;
     margin-bottom: 10px;
     font-family: 'Open Sans Condensed';
+    width: 99%;
+    text-align: center;
+    clear: both;
 }
 
 article.historic table a:link {
@@ -115,9 +118,8 @@ article.historic table tr:hover td {
 }
 
 article.historic .dataTables_wrapper{
-    width: 90% ;
+    width: 98% ;
     margin: auto;
-    display: table;
 }
 
 article.historic table.dataTable.no-footer{
@@ -128,6 +130,8 @@ article.historic div.dataTables_filter,
 article.historic div.dataTables_length{
     position: relative;
     top: 3em;
+    left: 5px;
+    margin-right: 10px;
 }
 
 article.historic div.dataTables_info,
@@ -140,4 +144,132 @@ article.historic div.dataTables_length{
 article.historic div.dataTables_paginate a.paginate_button {
     margin-top: 10px;
     padding: 0.3em 0.6em;
+}
+
+
+  /* Table Base */
+
+  article.historic table {
+    max-width: 100%;
+    background-color: transparent;
+    border-collapse: collapse;
+    border-spacing: 0;
+    font-family: arial;
+  }
+
+  article.historic .table {
+    border-bottom: #999999 solid 1px;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  
+  article.historic .table th {
+      border-right: darkslategrey;
+  }
+  
+  article.historic .table td {
+      border-right: lightgray solid 1px;
+      
+  }
+  
+  article.historic .table-responsive td:first-child{
+      border-top: none !important;
+  }
+
+
+  article.historic .table th,
+  article.historic .table td {
+    font-size: 12px;
+    padding: 8px;
+    line-height: 20px;
+    text-align: left;
+    vertical-align: middle;
+  }
+
+  article.historic .table td:last-child {
+     border-right: 0;
+  }
+
+  article.historic .table thead th {
+    font-weight: normal;
+    background-color: gray;
+    color: #fff;
+    font-size: 15px;
+    text-shadow: none;
+  }
+
+/* Small Sizes */
+@media (max-width: 767px) { 
+  
+  /* Responsive Table */
+  article.historic .table-responsive {
+    display: block;
+    position: relative;
+    width: 100%;
+  }
+    
+  article.historic .table-responsive td{
+    border-bottom: 1px solid #FFF !important;
+    border-right: 1px solid #FFF !important;
+  }
+  
+  article.historic table tr{
+      padding-left: 0px;
+  }
+  
+  article.historic .table-responsive thead,
+  article.historic .table-responsive tbody,
+  article.historic .table-responsive th,
+  article.historic .table-responsive td,
+  article.historic .table-responsive tr {
+    display: block;
+  }
+  article.historic .table-responsive td,
+  article.historic .table-responsive th {
+    height: 30px;
+    border-top: 0;
+  }
+  
+  article.historic .table thead th,
+  article.historic .table thead td{
+    font-size: 0.8em;
+    text-align: left;
+  }
+  
+  article.historic .table-responsive td{
+    text-align: center;
+    border: none;
+  }
+  
+  article.historic .table-responsive td:first-child{
+    text-align: center;
+  }
+  
+  article.historic .table thead th {
+    text-align: left;
+    padding-right: 20px;
+  }
+
+  article.historic .table-responsive thead {
+    float: left;
+  }
+
+  article.historic .table-responsive tbody {
+    width: auto;
+    position: relative;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap;
+  }
+
+ article.historic .table-responsive tbody tr {
+    display: inline-block;
+  }
+  
+  .dataTables_wrapper .dataTables_filter input {
+    margin-left: 0.5em;
+    width: 91px;
+    height: 14px;
+  }
+
 }
