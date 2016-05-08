@@ -48,6 +48,13 @@ discentes no âmbito da disciplina pela abordagem dos conceitos estudados
 com o desenvolvimento de páginas web dinâmicas com Servlets (linguagem
 Java).
                                 </p>
+                                <p>
+                                    <strong>Objetivo 3:</strong> Vincular as páginas estáticas criadas em HTML aos Sevlets e, por último, às
+páginas web dinâmicas que serão criadas pelas páginas JSP. Deste modo, esta
+atividade visa permitir ao usuário a integração entre HTML, Servlets e JSP,
+procurando estruturar, ainda que de modo embrionário, a separação lógica do
+aplicativo web em três camadas (apresentação, controle e negócio).
+                                </p>
 				<p>Sistema para permitir ao usuário a manipulação de uma fração (numerador e denominador) matemática.</p>
 				<p>&nbsp;</p>
 				<p><strong>Professor:</strong> Guilherme Veloso Neves Oliveira</p>

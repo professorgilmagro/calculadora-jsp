@@ -235,3 +235,12 @@ form.calculator table.calc-board tr.visor .details {
     margin-right: 12px;
     top: -6px;
 }
+
+article.historic table tr:first-child th:last-child {
+    -moz-border-radius-topright:0px;
+    -webkit-border-top-right-radius:0px;
+    border-top-right-radius:0px;
+    -moz-border-radius-bottomleft: 3px;
+    -webkit-border-bottom-left-radius: 3px;
+    border-bottom-left-radius:3px;
+}
