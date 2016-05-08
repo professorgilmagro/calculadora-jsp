@@ -51,10 +51,6 @@ article.historic table th {
     padding:21px 25px 22px 25px;
     border-top:1px solid #fafafa;
     border-bottom:1px solid #e0e0e0;
-
-    background: #ededed;
-    background: -webkit-gradient(linear, left top, left bottom, from(#ededed), to(#ebebeb));
-    background: -moz-linear-gradient(top,  #ededed,  #ebebeb);
 }
 article.historic table th:first-child {
     text-align: left;
@@ -75,8 +71,6 @@ article.historic table tr {
     padding-left:20px;
 }
 article.historic table td:first-child {
-    text-align: left;
-    padding-left:20px;
     border-left: 0;
 }
 article.historic table td {
@@ -182,7 +176,7 @@ article.historic div.dataTables_paginate a.paginate_button {
     font-size: 12px;
     padding: 8px;
     line-height: 20px;
-    text-align: left;
+    text-align: center;
     vertical-align: middle;
   }
 

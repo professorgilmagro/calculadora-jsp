@@ -67,7 +67,7 @@
 							<td>`<%= frac.getSimplifiedResult().getMathExpression() %>`</td>
 							<td><%= frac.getDecimalResult() %></td>
 							<td><%= frac.getTypes().toString() %></td>
-                                                        <td><a onclick="return confirm('Tem certeza que deseja excluir este item?')" href="historico?action=<%= Historico.ACTION_REMOVE %>&idx=<%= i %>"><img src="assets/images/delete.png"></a></td>
+                                                        <td><a onclick="return confirm('Tem certeza que deseja excluir este item?')" href="historico?action=<%= Historico.ACTION_REMOVE %>&idx=<%= i %>"><img src="assets/images/delete2.png"></a></td>
 						</tr>
                                                 <%
                                                         }
